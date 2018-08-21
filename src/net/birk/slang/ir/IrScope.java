@@ -43,21 +43,10 @@ public class IrScope {
 				return null;
 			}
 		}
-/*
-		IrValue result = symbols.getOrDefault(name, null);
-		if(result == null) {
-			if(parent != null) {
-				return parent.get(name);
-			} else {
-				return null;
-			}
-		} else {
-			return result;
-		}
-		*/
 	}
 
 	public HashMap<String, IrValue> getSymbols() {
 		return symbols;
 	}
+
 }

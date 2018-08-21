@@ -111,7 +111,32 @@ fn arrayTest() {
 
     //a[100] = 1001;
     //println("a[100] = ", a[100]);
+
+    println("len(a) = ", len(a));
 }
+
+fn stringLengthTest() {
+    println("len('Hello, world!') = ", len("Hello, world!"));
+}
+
+var bigLoopCounter = 0;
+fn bigLoopTest() {
+    if bigLoopCounter == 10000 do return;
+    println("bigLoop: ", bigLoopCounter);
+    bigLoopCounter += 1;
+    bigLoopTest();
+}
+
+//fn tableTest() {
+//    var t = {
+//        hello = "world!",
+//        "123test" = "Hello, "
+//    };
+//    t["Lol"] = 123;
+//    t[0] = 321;
+//
+//    println("len(t) = ", len(t));
+//}
 
 fn main() {
     genericTest();
@@ -123,10 +148,11 @@ fn main() {
     assignmentOperators();
     compTest();
     eqTest();
+    stringLengthTest();
+    //bigLoopTest();
 
     arrayTest();
 
     factorialTest();
-
     return 123;
 }

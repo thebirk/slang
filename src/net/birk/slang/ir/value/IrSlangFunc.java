@@ -24,9 +24,16 @@ public class IrSlangFunc extends IrFunc {
 		if(argNames.size() != args.size()) {
 			throw new IrException(getLocation(), "Argument count mismatch! Wanted " + argNames.size() + " got " + args.size());
 		}
-		IrScope func = new IrScope(scope);
-		for(int i = 0; i < args.size(); i++) {
-			func.add(argNames.get(i), args.get(i));
+
+		IrScope func = scope;
+		//TODO: Varargs? Does this need to be args then?
+		if(argNames.size() > 0) {
+			//NOTE: If we dont have any arguments we dont need the Scope
+			//TODO: If we are a vararegs function we might need it based on args
+			func = new IrScope(scope);
+			for (int i = 0; i < args.size(); i++) {
+				func.add(argNames.get(i), args.get(i));
+			}
 		}
 
 		IrStmtResult result = block.eval(func);

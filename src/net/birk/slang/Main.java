@@ -1,5 +1,6 @@
 package net.birk.slang;
 
+import net.birk.slang.ir.IrCore;
 import net.birk.slang.ir.IrException;
 import net.birk.slang.ir.IrScope;
 import net.birk.slang.ir.value.*;
@@ -15,6 +16,8 @@ public class Main {
 
 	/*
 	 * TODO:
+	 *  - Add while
+	 *  - Add for
 	 *  - IrJavaFunc:
 	 *   - Arguments that take the arg count
 	 *   - Flag to set varargs
@@ -27,6 +30,7 @@ public class Main {
 	 *
 	 * TODONE:
 	 *  + Add array type []
+	 *  + Add len() function
 	 *
 	 * MAYBEDO:
 	 *   - Python like **kwargs for tables?
@@ -36,6 +40,8 @@ public class Main {
 	 *      fn add(a: Number, b: Number): Number {
 	 *      	return a + b;
 	 *      }
+	 *   - Tail calls? Is it even possible for us?
+	 *    - We only really need to keep the same Scope, otherwise we nest deep
 	 *
 	 */
 
@@ -75,46 +81,7 @@ public class Main {
 				}
 			}
 
-			global.add("println", new IrJavaFunc(new SourceLoc("builtin-println", 1, 1)) {
-				@Override
-				public IrValue call(IrScope scope, ArrayList<IrValue> args) {
-					for(IrValue v : args) {
-						switch (v.getType()) {
-							case IrValue.STRING: {
-								IrString str = (IrString) v;
-								System.out.print(str.getValue());
-							} break;
-							case IrValue.NUMBER: {
-								IrNumber n = (IrNumber) v;
-								System.out.print(n.getValue());
-							} break;
-							case IrValue.NULL: {
-								System.out.print("null");
-							} break;
-							case IrValue.BOOLEAN: {
-								IrBoolean b = (IrBoolean)v;
-								System.out.print(b.getValue());
-							} break;
-							case IrValue.FUNC: {
-								throw new RuntimeException("Unimplemented!");
-							} //break;
-						}
-					}
-					System.out.println();
-					return new IrNull(null);
-				}
-			});
-
-			global.add("exit", new IrJavaFunc(new SourceLoc("builtin-exit", 1, 1)) {
-				@Override
-				public IrValue call(IrScope scope, ArrayList<IrValue> args) {
-					if(args.get(0).getType() == IrValue.NUMBER) {
-						IrNumber n = (IrNumber) args.get(0);
-						System.exit((int)n.getValue());
-					}
-					return new IrNull(null);
-				}
-			});
+			IrCore.addFunctions(global);
 
 			Timer.startSection("Ir Run");
 			// Eval all top level expression once we have them all added

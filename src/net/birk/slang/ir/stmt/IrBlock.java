@@ -20,7 +20,7 @@ public class IrBlock extends IrStmt {
 		for(IrStmt stmt : stmts) {
 			IrStmtResult result = stmt.eval(scope);
 			if(result.getStatus() != IrStmtResult.NORMAL) {
-				//TODO: This will catch both returns and future thing like break and continue, fix that!
+				//TODO: This will catch both returns and future things like break and continue, fix that!
 				return result;
 			}
 		}
