@@ -28,7 +28,7 @@ fn twoArgsTest() {
         println("I got ", a, " and ", b, "!");
     }
     func(1, 2);
-    func(1, 2, 3);
+    //func(1, 2, 3); // this should fail
 }
 
 fn eqTest() {
@@ -48,8 +48,11 @@ fn returnTest() {
     println("sqrt(4): ", sqrt(4));
 }
 
+var recurseCount = 100;
 fn recurse() {
-    a -= 1;
+    if recurseCount <= 0 do return;
+    println("recurseCount = ", recurseCount);
+    recurseCount -= 1;
     recurse();
 }
 
@@ -111,17 +114,19 @@ fn arrayTest() {
 }
 
 fn main() {
-    //genericTest();
-    //concatTest();
-    //functionRenameTest();
+    genericTest();
+    concatTest();
+    functionRenameTest();
     //twoArgsTest();
-    //returnTest();
-    //recurse();
-    //assignmentOperators();
-    //compTest();
-    //eqTest();
+    returnTest();
+    recurse();
+    assignmentOperators();
+    compTest();
+    eqTest();
 
     arrayTest();
 
     factorialTest();
+
+    return 123;
 }

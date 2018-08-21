@@ -20,11 +20,22 @@ public class Main {
 	 *   - Flag to set varargs
 	 *  - IrSlangFunc:
 	 *   - Varargs flags
-	 *    - only varargs if last param looks like this "*ident)"
+	 *    - only varargs if last param looks like this "*ident", turns into array
 	 *    - Pass all args as array
-	 *  - Add array type []
 	 *  - Add table type {}
 	 *  - Add userdata type (remember to implement the userdata tag)
+	 *
+	 * TODONE:
+	 *  + Add array type []
+	 *
+	 * MAYBEDO:
+	 *   - Python like **kwargs for tables?
+	 *   - Argument list type hint
+	 *    - Return type as well?
+	 *    - ex.
+	 *      fn add(a: Number, b: Number): Number {
+	 *      	return a + b;
+	 *      }
 	 *
 	 */
 
@@ -94,6 +105,17 @@ public class Main {
 				}
 			});
 
+			global.add("exit", new IrJavaFunc(new SourceLoc("builtin-exit", 1, 1)) {
+				@Override
+				public IrValue call(IrScope scope, ArrayList<IrValue> args) {
+					if(args.get(0).getType() == IrValue.NUMBER) {
+						IrNumber n = (IrNumber) args.get(0);
+						System.exit((int)n.getValue());
+					}
+					return new IrNull(null);
+				}
+			});
+
 			Timer.startSection("Ir Run");
 			// Eval all top level expression once we have them all added
 			for(Map.Entry<String, IrValue> kv : file.getSymbols().entrySet()) {
@@ -107,10 +129,17 @@ public class Main {
 			if(main == null) {
 				throw new IrException(null, "Could not find the main function!");
 			}
-			((IrFunc)main).call(file, mainArgs);
+			IrValue returnValue = ((IrFunc)main).call(file, mainArgs);
+			int returnCode = 0;
+			if(returnValue.getType() == IrValue.NUMBER) {
+				IrNumber n = (IrNumber) returnValue;
+				returnCode = (int) n.getValue();
+			}
 
 			System.out.println("\n============================");
 			Timer.printTimings();
+
+			System.exit(returnCode);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
