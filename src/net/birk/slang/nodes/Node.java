@@ -19,6 +19,7 @@ public class Node {
 	public static final int VAR = 13;
 	public static final int ASSIGNMENT = 14;
 	public static final int IF = 15;
+	public static final int NULL = 16;
 
 	private int type;
 	private SourceLoc location;

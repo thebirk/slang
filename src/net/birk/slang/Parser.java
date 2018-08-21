@@ -38,6 +38,19 @@ public class Parser {
 		else if(matchToken(Token.FALSE)) {
 			return new NodeFalse(t.getSourceLoc());
 		}
+		else if(matchToken(Token.NULL)) {
+			return new NodeNull(t.getSourceLoc());
+		}
+		else if(matchToken('(')) {
+			Node expr = parseExpr();
+			if(!matchToken(')')) {
+				System.err.println(currentToken.getSourceLoc() + ": Syntax error! Expected ')' after expression, got '" + currentToken.getTypeString() + "'.");
+				System.exit(1);
+				return null;
+			}
+
+			return expr;
+		}
 		else {
 			System.err.println(t.getSourceLoc() + ": Syntax error! Expected operand.");
 			System.exit(1);

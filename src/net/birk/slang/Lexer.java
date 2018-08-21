@@ -173,6 +173,7 @@ public class Lexer {
 					case "false": tokens.set(i, new Token(Token.FALSE, "false", t.getSourceLoc())); break;
 					case "do": tokens.set(i, new Token(Token.DO, "do", t.getSourceLoc())); break;
 					case "if": tokens.set(i, new Token(Token.IF, "if", t.getSourceLoc())); break;
+					case "null": tokens.set(i, new Token(Token.NULL, "null", t.getSourceLoc())); break;
 				}
 			}
 		}

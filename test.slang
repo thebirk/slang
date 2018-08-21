@@ -12,6 +12,9 @@ fn main(args) {
         a += 1;
     }
 
+    var c = 32 + (2 * 4);
+    var d = null;
+
     if b == true do a -= 1;
 
     println(a);
