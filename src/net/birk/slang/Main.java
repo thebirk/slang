@@ -1,9 +1,11 @@
 package net.birk.slang;
 
+import net.birk.slang.ir.IrException;
 import net.birk.slang.ir.IrScope;
 import net.birk.slang.ir.stmt.IrStmtResult;
 import net.birk.slang.ir.value.*;
 import net.birk.slang.nodes.Node;
+import net.birk.slang.nodes.NodeFunc;
 import net.birk.slang.nodes.NodeVar;
 
 import javax.swing.text.html.HTMLDocument;
@@ -30,10 +32,15 @@ public class Main {
 				switch (n.getType()) {
 					case Node.VAR: {
 						NodeVar var = (NodeVar) n;
-						file.set(var.getName(), IrValue.generateExpr(var.getExpr()));
+						if(!file.add(var.getName(), IrValue.generateExpr(var.getExpr()))) {
+							throw new IrException(var.getLocation(), "Symbol '" + var.getName() + "' already exists!");
+						}
 					} break;
 					case Node.FUNC: {
-
+						NodeFunc f = (NodeFunc) n;
+						if(!file.add(f.getIdent().getName(), IrValue.generateExpr(n))) {
+							throw new IrException(f.getLocation(), "Symbol '" + f.getIdent().getName() + "' already exists!");
+						}
 					} break;
 					default: {
 						System.err.println("compiler error!");
@@ -45,7 +52,7 @@ public class Main {
 
 			global.add("println", new IrJavaFunc(null) {
 				@Override
-				public IrValue call(ArrayList<IrValue> args) {
+				public IrValue call(IrScope scope, ArrayList<IrValue> args) {
 					for(IrValue v : args) {
 						switch (v.getType()) {
 							case IrValue.STRING: {
@@ -79,7 +86,10 @@ public class Main {
 			// ...
 
 			//TODO: Call main function
+			ArrayList<IrValue> mainArgs = new ArrayList<IrValue>();
+			((IrFunc)file.get("main")).call(file, mainArgs);
 
+			System.out.println("\n============================");
 			Timer.printTimings();
 		} catch (IOException e) {
 			e.printStackTrace();

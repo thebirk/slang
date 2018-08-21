@@ -7,7 +7,7 @@ import java.util.ArrayList;
 public class NodeFunc extends Node {
 
 	private NodeIdent ident;
-	private ArrayList<String>  args;
+	private ArrayList<String> args;
 	private NodeBlock block;
 
 	public NodeFunc(NodeIdent ident, ArrayList<String> args, NodeBlock block, SourceLoc location) {
@@ -17,7 +17,7 @@ public class NodeFunc extends Node {
 		this.block = block;
 	}
 
-	public Node getIdent() {
+	public NodeIdent getIdent() {
 		return ident;
 	}
 

@@ -18,7 +18,7 @@ public abstract class IrFunc extends IrValue {
 		this.functionType = functionType;
 	}
 
-	public abstract IrValue call(ArrayList<IrValue> args);
+	public abstract IrValue call(IrScope scope, ArrayList<IrValue> args);
 
 	@Override
 	public IrValue eval(IrScope scope) {

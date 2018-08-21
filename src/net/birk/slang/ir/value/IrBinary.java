@@ -18,6 +18,7 @@ public class IrBinary extends IrValue {
 
 	@Override
 	public IrValue eval(IrScope scope) {
-		return IrValue.add(op, lhs.eval(scope), rhs.eval(scope));
+		return IrValue.doBinary(op, lhs.eval(scope), rhs.eval(scope));
 	}
+
 }

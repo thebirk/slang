@@ -19,7 +19,9 @@ public class IrAssignment extends IrStmt {
 
 	@Override
 	public IrStmtResult eval(IrScope scope) {
-		lhs = lhs.eval(scope);
+		if(lhs.getType() != IrValue.IDENT) {
+			lhs = lhs.eval(scope);
+		}
 		if(lhs.getType() != IrValue.IDENT) {
 			throw new IrException(lhs.getLocation(), "Left hand side of assignment cannot be assigned to!");
 		}

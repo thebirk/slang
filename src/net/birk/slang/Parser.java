@@ -206,7 +206,9 @@ public class Parser {
 		Node expr = parseExpr();
 		NodeBlock block = parseBlock();
 
-		return new NodeIf(expr, block, iff.getSourceLoc());
+		//TODO: else
+
+		return new NodeIf(expr, block, null, iff.getSourceLoc());
 	}
 
 	private Node parseReturn() {
