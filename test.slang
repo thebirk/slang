@@ -138,6 +138,10 @@ fn bigLoopTest() {
 //    println("len(t) = ", len(t));
 //}
 
+//fn printf(fmt, *args) {
+//    println(fmt, ..args); // A 'spread' operator would be nice
+//}
+
 fn main() {
     genericTest();
     concatTest();

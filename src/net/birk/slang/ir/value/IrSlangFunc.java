@@ -21,6 +21,12 @@ public class IrSlangFunc extends IrFunc {
 
 	@Override
 	public IrValue call(IrScope scope, ArrayList<IrValue> args) {
+		//TODO: When we have varargs check that we meet the minium?
+		//      Is the varargs argument required? The coolest would be no, and just fill the arg with an empty arrray or null
+		// ex:
+		//   fn test(fmt, *args) ->
+		//     fmt - required
+		//     *args - optional (null or empty array) if not given
 		if(argNames.size() != args.size()) {
 			throw new IrException(getLocation(), "Argument count mismatch! Wanted " + argNames.size() + " got " + args.size());
 		}
