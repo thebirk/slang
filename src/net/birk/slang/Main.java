@@ -11,6 +11,7 @@ import net.birk.slang.nodes.NodeVar;
 import javax.swing.text.html.HTMLDocument;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Map;
 
 public class Main {
 
@@ -83,7 +84,11 @@ public class Main {
 
 			Timer.startSection("Ir Run");
 			//TODO: Eval all top level variables after adding them all
-			// ...
+			// ... Do we really need to do that? Yes!
+			for(Map.Entry<String, IrValue> kv : file.getSymbols().entrySet()) {
+				IrValue v = kv.getValue();
+				file.set(kv.getKey(), v.eval(file));
+			}
 
 			//TODO: Call main function
 			ArrayList<IrValue> mainArgs = new ArrayList<IrValue>();

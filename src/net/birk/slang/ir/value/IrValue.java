@@ -43,13 +43,17 @@ public abstract class IrValue {
 			case Token.LTE:
 			case '<':
 			case '>': {
-
+				return null;
 			}
 
 			case '+': {
 				if(lhs.getType() == IrValue.STRING) {
+					//IrString result = new IrString();
+					return null;
+				} else if(rhs.getType() == IrValue.STRING) {
 
-					break;
+					//break;
+					return null;
 				}
 				// fallthrough if we dont have a string
 			}
@@ -57,13 +61,36 @@ public abstract class IrValue {
 			case '*':
 			case '/':
 			case '%': {
-				if(lhs.getType() != IrValue.NUMBER || rhs.getType() != IrValue.NUMBER) {
-					
+				if(lhs.getType() != IrValue.NUMBER) {
+					throw new IrException(lhs.getLocation(), "Can only use operator '" + ((char)op) + "' on numbers!");
+				} else if(rhs.getType() != IrValue.NUMBER) {
+					throw new IrException(lhs.getLocation(), "Can only use operator '" + ((char)op) + "' on numbers!");
 				}
+
+				IrNumber lhsn = (IrNumber)lhs;
+				IrNumber rhsn = (IrNumber)rhs;
+				switch (op) {
+					case '+': return new IrNumber(lhsn.getValue() + rhsn.getValue(), lhs.getLocation());
+					case '-': return new IrNumber(lhsn.getValue() - rhsn.getValue(), lhs.getLocation());
+					case '*': return new IrNumber(lhsn.getValue() * rhsn.getValue(), lhs.getLocation());
+					case '/': return new IrNumber(lhsn.getValue() / rhsn.getValue(), lhs.getLocation());
+					case '%': return new IrNumber(lhsn.getValue() % rhsn.getValue(), lhs.getLocation());
+
+					default: {
+						throw new RuntimeException("Invalid op!");
+					}
+				}
+			}
+
+			default: {
+				//TODO: Complete
+				//      - If both are numbers we do number ops
+				//      - If the first arg is a string we do string concatenation
+				throw new RuntimeException("Incomplete!");
 			}
 		}
 
-		if(lhs.getType() == IrValue.NUMBER && rhs.getType() == IrValue.NUMBER) {
+		/*if(lhs.getType() == IrValue.NUMBER && rhs.getType() == IrValue.NUMBER) {
 			IrNumber lhsn = (IrNumber)lhs;
 			IrNumber rhsn = (IrNumber)rhs;
 
@@ -83,10 +110,13 @@ public abstract class IrValue {
 			//      - If both are numbers we do number ops
 			//      - If the first arg is a string we do string concatenation
 			throw new RuntimeException("Incomplete!");
-		}
+		}*/
 	}
 
 	public static IrValue unary(int op, IrValue value) {
+		// + - !
+		// + - -> numbers
+		// !   -> boolean, null
 		throw new RuntimeException("Incomplete");
 	}
 
@@ -147,10 +177,10 @@ public abstract class IrValue {
 			}
 			case Node.IF: {
 				NodeIf nif = (NodeIf) n;
-				if(nif.getElseBlock() == null) {
+				if(nif.getElse() == null) {
 					return new IrIf(generateExpr(nif.getExpr()), generateBlock(nif.getBlock()), null, nif.getLocation());
 				} else {
-					return new IrIf(generateExpr(nif.getExpr()), generateBlock(nif.getBlock()), generateBlock(nif.getElseBlock()), nif.getLocation());
+					return new IrIf(generateExpr(nif.getExpr()), generateBlock(nif.getBlock()), generateStmt(nif.getElse()), nif.getLocation());
 				}
 			}
 			default: {

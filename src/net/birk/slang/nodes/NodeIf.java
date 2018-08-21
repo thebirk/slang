@@ -6,13 +6,13 @@ public class NodeIf extends Node {
 
 	private Node expr;
 	private NodeBlock block;
-	private NodeBlock elseBlock;
+	private Node _else;
 
-	public NodeIf(Node expr, NodeBlock block, NodeBlock elseBlock, SourceLoc location) {
+	public NodeIf(Node expr, NodeBlock block, Node _else, SourceLoc location) {
 		super(Node.IF, location);
 		this.expr = expr;
 		this.block = block;
-		this.elseBlock = elseBlock;
+		this._else = _else;
 	}
 
 	public Node getExpr() {
@@ -23,8 +23,8 @@ public class NodeIf extends Node {
 		return block;
 	}
 
-	public NodeBlock getElseBlock() {
-		return elseBlock;
+	public Node getElse() {
+		return _else;
 	}
 
 }

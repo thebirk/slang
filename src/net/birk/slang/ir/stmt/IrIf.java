@@ -8,13 +8,13 @@ public class IrIf extends IrStmt {
 
 	private IrValue cond;
 	private IrBlock block;
-	private IrBlock elseBlock;
+	private IrStmt _else;
 
-	public IrIf(IrValue cond, IrBlock block, IrBlock elseBlock, SourceLoc location) {
+	public IrIf(IrValue cond, IrBlock block, IrStmt _else, SourceLoc location) {
 		super(IrStmt.IF, location);
 		this.cond = cond;
 		this.block = block;
-		this.elseBlock = elseBlock;
+		this._else = _else;
 	}
 
 	@Override
@@ -22,8 +22,8 @@ public class IrIf extends IrStmt {
 		if(IrValue.isTrue(cond.eval(scope))) {
 			return block.eval(scope);
 		} else {
-			if(elseBlock != null) {
-				return block.eval(scope);
+			if(_else != null) {
+				return _else.eval(scope);
 			} else {
 				return new IrStmtResult(IrStmtResult.NORMAL, null);
 			}

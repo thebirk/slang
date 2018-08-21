@@ -205,10 +205,17 @@ public class Parser {
 
 		Node expr = parseExpr();
 		NodeBlock block = parseBlock();
+		Node _else = null;
 
-		//TODO: else
+		if(matchToken(Token.ELSE)) {
+			if(isToken(Token.IF)) {
+				_else = parseIf();
+			} else {
+				_else = parseBlock();
+			}
+		}
 
-		return new NodeIf(expr, block, null, iff.getSourceLoc());
+		return new NodeIf(expr, block, _else, iff.getSourceLoc());
 	}
 
 	private Node parseReturn() {

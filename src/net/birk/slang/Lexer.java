@@ -98,6 +98,15 @@ public class Lexer {
 		fr.mark(1);
 		int c2 = fr.read();
 
+		if(c == '/' && c2 == '/') {
+			do {
+				c = fr.read();
+			} while(c != '\n' && c != -1);
+			offset = 1;
+			line++;
+			return readToken();
+		}
+
 		if(c == '=' && c2 == '=') {
 			offset += 2;
 			return new Token(Token.EQUALS, "==", new SourceLoc(path, line, offset - 2));
@@ -175,6 +184,7 @@ public class Lexer {
 					case "if": tokens.set(i, new Token(Token.IF, "if", t.getSourceLoc())); break;
 					case "null": tokens.set(i, new Token(Token.NULL, "null", t.getSourceLoc())); break;
 					case "return": tokens.set(i, new Token(Token.RETURN, "return", t.getSourceLoc())); break;
+					case "else": tokens.set(i, new Token(Token.ELSE, "else", t.getSourceLoc())); break;
 				}
 			}
 		}
