@@ -1,5 +1,7 @@
 package net.birk.slang.ir;
 
+import net.birk.slang.ir.value.IrValue;
+
 import java.util.HashMap;
 
 public class IrScope {
@@ -12,8 +14,25 @@ public class IrScope {
 		symbols = new HashMap<String, IrValue>();
 	}
 
-	public void set(String name, IrValue value) {
+	public boolean add(String name, IrValue value) {
+		if(symbols.containsKey(name)) return false;
 		symbols.put(name, value);
+		return true;
+	}
+
+	public boolean set(String name, IrValue value) {
+		IrValue result = symbols.getOrDefault(name, null);
+		if(result == null) {
+			if(parent != null) {
+				parent.set(name, value);
+			} else {
+				return false;
+			}
+		} else {
+			symbols.put(name, value);
+		}
+
+		return true;
 	}
 
 	public IrValue get(String name) {

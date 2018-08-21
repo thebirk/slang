@@ -1,6 +1,7 @@
-package net.birk.slang.ir;
+package net.birk.slang.ir.value;
 
 import net.birk.slang.SourceLoc;
+import net.birk.slang.ir.IrScope;
 import net.birk.slang.nodes.*;
 
 public abstract class IrValue {
@@ -12,6 +13,7 @@ public abstract class IrValue {
 	public static final int BINARY = 4;
 	public static final int IDENT = 5;
 	public static final int UNARY = 6;
+	public static final int BOOLEAN = 7;
 
 	private int type;
 	private SourceLoc location;
@@ -28,11 +30,15 @@ public abstract class IrValue {
 	public abstract IrValue eval(IrScope scope);
 
 	//NOTE: We do not resole lhs and rhs here. We expect you to cover that.
-	public static IrValue add(IrValue lhs, IrValue rhs) {
+	public static IrValue add(int op, IrValue lhs, IrValue rhs) {
 		//TODO: Complete
 		//      - If both are numbers we do number ops
 		//      - If the first arg is a string we do string concatenation
 		throw new RuntimeException("Incomplete!");
+	}
+
+	public static IrValue unary(int op, IrValue value) {
+		throw new RuntimeException("Incomplete");
 	}
 
 	public static IrValue generateExpr(Node expr) {
@@ -56,11 +62,22 @@ public abstract class IrValue {
 				NodeBinary b = (NodeBinary) expr;
 				return new IrBinary(b.getOp(), generateExpr(b.getLhs()), generateExpr(b.getRhs()), b.getLocation());
 			}
+			case Node.TRUE: {
+				return new IrBoolean(true, expr.getLocation());
+			}
+			case Node.FALSE: {
+				return new IrBoolean(false, expr.getLocation());
+			}
+
 
 			default: {
 				throw new RuntimeException("Invalid type value of missing case!");
 			}
 		}
+	}
+
+	public SourceLoc getLocation() {
+		return location;
 	}
 
 }

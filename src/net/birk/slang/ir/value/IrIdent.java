@@ -1,6 +1,8 @@
-package net.birk.slang.ir;
+package net.birk.slang.ir.value;
 
 import net.birk.slang.SourceLoc;
+import net.birk.slang.ir.IrException;
+import net.birk.slang.ir.IrScope;
 
 public class IrIdent extends IrValue {
 
@@ -18,10 +20,8 @@ public class IrIdent extends IrValue {
 	@Override
 	public IrValue eval(IrScope scope) {
 		IrValue value = scope.get(name);
-		if(value != null) {
-			System.err.println("Symbol '" + name + "' does not exist!");
-			System.exit(1);
-			return null;
+		if(value == null) {
+			throw new IrException(getLocation(), "Symbol '" + name + "' does not exist!");
 		} else {
 			return value;
 		}

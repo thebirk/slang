@@ -209,6 +209,20 @@ public class Parser {
 		return new NodeIf(expr, block, iff.getSourceLoc());
 	}
 
+	private Node parseReturn() {
+		assert currentToken.getType() == Token.RETURN;
+
+		Token ret = currentToken;
+		nextToken();
+
+		if(isToken(';')) {
+			return new NodeReturn(null, ret.getSourceLoc());
+		} else {
+			Node expr = parseExpr();
+			return new NodeReturn(expr, ret.getSourceLoc());
+		}
+	}
+
 	private Node parseStmt() {
 		if(isToken(Token.FUNC)) {
 			return parseFunc();
@@ -218,6 +232,12 @@ public class Parser {
 		}
 		else if(isToken(Token.IF)) {
 			return parseIf();
+		}
+		else if(isToken(Token.RETURN)) {
+			return parseReturn();
+		}
+		else if(isToken('{') || isToken(Token.DO)) {
+			return parseBlock();
 		}
 		else if(matchToken(';')) {
 			return null;
@@ -250,7 +270,7 @@ public class Parser {
 				stmts.add(stmt);
 
 				//NOTE: Hacky!
-				if(stmt.getType() != Node.FUNC && stmt.getType() != Node.IF) {
+				if(stmt.getType() != Node.FUNC && stmt.getType() != Node.IF && stmt.getType() != Node.BLOCK) {
 					if (!matchToken(';')) {
 						System.err.println(currentToken.getSourceLoc() + ": Syntax error! Expected ';' after statement, got '" + currentToken.getTypeString() + "'.");
 						System.exit(1);
@@ -272,7 +292,7 @@ public class Parser {
 					stmts.add(stmt);
 
 					//NOTE: Hacky!
-					if(stmt.getType() != Node.FUNC && stmt.getType() != Node.IF) {
+					if(stmt.getType() != Node.FUNC && stmt.getType() != Node.IF && stmt.getType() != Node.BLOCK) {
 						if (!matchToken(';')) {
 							System.err.println(currentToken.getSourceLoc() + ": Syntax error! Expected ';' after statement, got '" + currentToken.getTypeString() + "'.");
 							System.exit(1);

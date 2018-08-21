@@ -1,6 +1,7 @@
-package net.birk.slang.ir;
+package net.birk.slang.ir.value;
 
 import net.birk.slang.SourceLoc;
+import net.birk.slang.ir.IrScope;
 
 public class IrBinary extends IrValue {
 
@@ -17,6 +18,6 @@ public class IrBinary extends IrValue {
 
 	@Override
 	public IrValue eval(IrScope scope) {
-		return IrValue.add(lhs.eval(scope), rhs.eval(scope));
+		return IrValue.add(op, lhs.eval(scope), rhs.eval(scope));
 	}
 }

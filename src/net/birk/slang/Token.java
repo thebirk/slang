@@ -20,6 +20,7 @@ public class Token {
 	public static final int MINUS_EQUALS = 143;
 	public static final int IF = 144;
 	public static final int NULL = 145;
+	public static final int RETURN = 146;
 
 	private int type;
 	private String lexeme;
@@ -72,6 +73,7 @@ public class Token {
 			case MINUS_EQUALS: return "-=";
 			case IF: return "if";
 			case NULL: return "null";
+			case RETURN: return "return";
 		}
 
 		throw new RuntimeException("Invalid Token type: " + type);

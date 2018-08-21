@@ -1,7 +1,7 @@
 package net.birk.slang;
 
 import net.birk.slang.ir.IrScope;
-import net.birk.slang.ir.IrValue;
+import net.birk.slang.ir.value.IrValue;
 import net.birk.slang.nodes.Node;
 import net.birk.slang.nodes.NodeVar;
 
@@ -16,22 +16,19 @@ public class Main {
 			Timer.startSection("Lexer");
 			lexer = new Lexer("test.slang");
 			lexer.lex();
-			for(Token t : lexer.tokens) {
-				System.out.println(Token.typeToString(t.getType()) + ": '" + t.getLexeme() + "' :" + t.getSourceLoc());
-			}
-			Timer.endSection();
 
 			Timer.startSection("Parser");
 			Parser parser = new Parser(lexer.tokens);
 			ArrayList<Node> nodes = parser.parse();
 
+			Timer.startSection("Ir Gen");
 			IrScope global = new IrScope(null);
-			IrScope root = new IrScope(global);
+			IrScope file = new IrScope(global);
 			for(Node n : nodes) {
 				switch (n.getType()) {
 					case Node.VAR: {
 						NodeVar var = (NodeVar) n;
-						root.set(var.getName(), IrValue.generateExpr(var.getExpr()));
+						file.set(var.getName(), IrValue.generateExpr(var.getExpr()));
 					} break;
 					case Node.FUNC: {
 
@@ -44,11 +41,15 @@ public class Main {
 				}
 			}
 
-			Timer.endSection();
+			Timer.startSection("Ir Run");
+			//TODO: Eval all top level variables after adding them all
+			// ...
+
+			//TODO: Call main function
+
+			Timer.printTimings();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-
-		Timer.printTimings();
     }
 }

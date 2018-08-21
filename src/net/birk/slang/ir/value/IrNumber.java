@@ -1,7 +1,7 @@
-package net.birk.slang.ir;
+package net.birk.slang.ir.value;
 
 import net.birk.slang.SourceLoc;
-import net.birk.slang.nodes.Node;
+import net.birk.slang.ir.IrScope;
 
 public class IrNumber extends IrValue {
 

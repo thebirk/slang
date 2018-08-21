@@ -76,7 +76,7 @@ public class Lexer {
 			return t;
 		}
 
-		if(Character.isAlphabetic(c)) {
+		if(Character.isAlphabetic(c) || c == '_') {
 			StringBuilder builder = new StringBuilder();
 			while((Character.isAlphabetic(c) || Character.isDigit(c) || c == '_') && fr.ready()) {
 				builder.append((char) c);
@@ -174,8 +174,15 @@ public class Lexer {
 					case "do": tokens.set(i, new Token(Token.DO, "do", t.getSourceLoc())); break;
 					case "if": tokens.set(i, new Token(Token.IF, "if", t.getSourceLoc())); break;
 					case "null": tokens.set(i, new Token(Token.NULL, "null", t.getSourceLoc())); break;
+					case "return": tokens.set(i, new Token(Token.RETURN, "return", t.getSourceLoc())); break;
 				}
 			}
+		}
+	}
+
+	public void printTokens() {
+		for(Token t : tokens) {
+			System.out.println(Token.typeToString(t.getType()) + ": '" + t.getLexeme() + "' :" + t.getSourceLoc());
 		}
 	}
 
