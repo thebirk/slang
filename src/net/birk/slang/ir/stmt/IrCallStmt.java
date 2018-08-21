@@ -8,12 +8,12 @@ import net.birk.slang.ir.value.IrValue;
 
 import java.util.ArrayList;
 
-public class IrCall extends IrStmt {
+public class IrCallStmt extends IrStmt {
 
 	private IrValue func;
 	private ArrayList<IrValue> args;
 
-	public IrCall(IrValue func, ArrayList<IrValue> args, SourceLoc location) {
+	public IrCallStmt(IrValue func, ArrayList<IrValue> args, SourceLoc location) {
 		super(IrStmt.CALL, location);
 		this.func = func;
 		this.args = args;

@@ -40,12 +40,20 @@ fn eqTest() {
 
 }
 
+fn returnTest() {
+    fn sqrt(n) {
+        return n * n;
+    }
+
+    println("sqrt(4): ", sqrt(4));
+}
 
 fn main() {
     //genericTest();
     //concatTest();
     //functionRenameTest();
     //twoArgsTest();
+    returnTest();
 
     eqTest();
 }

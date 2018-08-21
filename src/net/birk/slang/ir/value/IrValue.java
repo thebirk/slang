@@ -19,6 +19,7 @@ public abstract class IrValue {
 	public static final int IDENT = 5;
 	public static final int UNARY = 6;
 	public static final int BOOLEAN = 7;
+	public static final int CALL = 8;
 
 	private int type;
 	private SourceLoc location;
@@ -187,8 +188,8 @@ public abstract class IrValue {
 				for(Node argn : ncall.getArgs()) {
 					args.add(generateExpr(argn));
 				}
-				IrCall irCall = new IrCall(generateExpr(ncall.getExpr()), args, ncall.getLocation());
-				return irCall;
+				IrCallStmt irCallStmt = new IrCallStmt(generateExpr(ncall.getExpr()), args, ncall.getLocation());
+				return irCallStmt;
 			}
 			case Node.ASSIGNMENT: {
 				NodeAssignment na = (NodeAssignment) n;
@@ -260,6 +261,14 @@ public abstract class IrValue {
 			case Node.UNARY: {
 				NodeUnary un = (NodeUnary) expr;
 				return new IrUnary(un.getOp(), generateExpr(un.getExpr()), un.getLocation());
+			}
+			case Node.CALL: {
+				NodeCall ncall = (NodeCall) expr;
+				ArrayList<IrValue> args = new ArrayList<IrValue>();
+				for(Node n : ncall.getArgs()) {
+					args.add(generateExpr(n));
+				}
+				return new IrCallValue(generateExpr(ncall.getExpr()), args, ncall.getLocation());
 			}
 
 			default: {
