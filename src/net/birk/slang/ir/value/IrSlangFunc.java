@@ -4,7 +4,6 @@ import net.birk.slang.SourceLoc;
 import net.birk.slang.ir.IrException;
 import net.birk.slang.ir.IrScope;
 import net.birk.slang.ir.stmt.IrBlock;
-import net.birk.slang.ir.stmt.IrStmt;
 import net.birk.slang.ir.stmt.IrStmtResult;
 
 import java.util.ArrayList;

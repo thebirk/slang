@@ -28,7 +28,7 @@ public class IrAssignment extends IrStmt {
 
 		IrIdent ident = (IrIdent) lhs;
 		if(!scope.set(ident.getName(), rhs.eval(scope))) {
-			throw new IrException(getLocation(), "Symbol '" + ident.getName() + "' does not exist!");
+			throw new IrException(lhs.getLocation(), "Symbol '" + ident.getName() + "' does not exist!");
 		}
 
 		return new IrStmtResult(IrStmtResult.NORMAL, null);

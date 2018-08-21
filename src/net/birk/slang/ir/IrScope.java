@@ -25,7 +25,7 @@ public class IrScope {
 			symbols.put(name, value);
 			return true;
 		} else {
-			if(parent == null) {
+			if(parent != null) {
 				return parent.set(name, value);
 			} else {
 				return false;
@@ -34,6 +34,16 @@ public class IrScope {
 	}
 
 	public IrValue get(String name) {
+		if(symbols.containsKey(name)) {
+			return  symbols.get(name);
+		} else {
+			if(parent != null) {
+				return parent.get(name);
+			} else {
+				return null;
+			}
+		}
+/*
 		IrValue result = symbols.getOrDefault(name, null);
 		if(result == null) {
 			if(parent != null) {
@@ -44,6 +54,7 @@ public class IrScope {
 		} else {
 			return result;
 		}
+		*/
 	}
 
 	public HashMap<String, IrValue> getSymbols() {

@@ -53,7 +53,7 @@ fn main() {
     //concatTest();
     //functionRenameTest();
     //twoArgsTest();
-    returnTest();
+    //returnTest();
 
     eqTest();
 }

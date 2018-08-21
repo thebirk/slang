@@ -64,7 +64,7 @@ public class Main {
 				}
 			}
 
-			global.add("println", new IrJavaFunc(null) {
+			global.add("println", new IrJavaFunc(new SourceLoc("builtin-println", 1, 1)) {
 				@Override
 				public IrValue call(IrScope scope, ArrayList<IrValue> args) {
 					for(IrValue v : args) {
@@ -90,7 +90,6 @@ public class Main {
 						}
 					}
 					System.out.println();
-
 					return new IrNull(null);
 				}
 			});
@@ -102,7 +101,7 @@ public class Main {
 				file.set(kv.getKey(), v.eval(file));
 			}
 
-			//TODO: Call main function
+			// Call main if it exists
 			ArrayList<IrValue> mainArgs = new ArrayList<IrValue>();
 			IrValue main = file.get("main");
 			if(main == null) {
