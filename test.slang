@@ -1,4 +1,5 @@
 var a = 123;
+var b = 32 + (3 * a);
 
 fn main(args) {
     var a = 123;

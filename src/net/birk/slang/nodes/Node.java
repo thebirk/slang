@@ -33,4 +33,7 @@ public class Node {
 		return type;
 	}
 
+	public SourceLoc getLocation() {
+		return location;
+	}
 }
