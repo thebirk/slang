@@ -60,6 +60,47 @@ fn assignmentOperators() {
     println(a);
 }
 
+fn compTest() {
+    var testa = 1;
+    if testa == 1 {
+        println("Yes");
+    }
+    testa += 2;
+    if testa != 1 {
+        println("Yes 2x");
+    }
+
+    var test = true;
+    if test == true {
+        println("Yes 3x");
+    }
+    if !test == false {
+        println("Yes 4x");
+    }
+
+    var isnul = null;
+    var isnotnul = "String";
+
+    if isnul == null {
+        println("Yea 5x");
+    }
+    if isnotnul != null {
+        println("Yea 6x");
+    }
+
+    if isnul != isnotnul {
+        println("Yea 7x");
+    }
+}
+
+fn factorialTest() {
+    fn factorial(n) {
+        if n <= 1 do return 1;
+        else do return n * factorial(n-1);
+    }
+    println("factorial(5) = ", factorial(5));
+}
+
 fn main() {
     //genericTest();
     //concatTest();
@@ -67,8 +108,9 @@ fn main() {
     //twoArgsTest();
     //returnTest();
     //recurse();
+    //assignmentOperators();
+    //compTest();
+    //eqTest();
 
-    assignmentOperators();
-
-    eqTest();
+    factorialTest();
 }

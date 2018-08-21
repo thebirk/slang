@@ -37,14 +37,63 @@ public abstract class IrValue {
 
 	//NOTE: We do not resole lhs and rhs here. We expect you to cover that.
 	public static IrValue doBinary(int op, IrValue lhs, IrValue rhs) {
+		// == !=        -> boolean, number, null
+		// <, <=, >, >= -> number
+
 		switch(op) {
 			case Token.EQUALS:
-			case Token.NE:
+			case Token.NE: {
+				if(lhs.getType() == IrValue.NULL || rhs.getType() == IrValue.NULL) {
+					if(lhs.getType() == IrValue.NULL && rhs.getType() == IrValue.NULL) {
+						if(op == Token.EQUALS) return new IrBoolean(true, lhs.getLocation());
+						else return new IrBoolean(false, lhs.getLocation());
+					} else {
+						if(op == Token.NE) {
+							return new IrBoolean(true, lhs.getLocation());
+						} else {
+							return new IrBoolean(false, lhs.getLocation());
+						}
+					}
+				} else if(lhs.getType() == IrValue.BOOLEAN && rhs.getType() == IrValue.BOOLEAN) {
+					IrBoolean lb = (IrBoolean)lhs;
+					IrBoolean rb = (IrBoolean)rhs;
+					if(op == Token.EQUALS) {
+						return new IrBoolean(lb.getValue() == rb.getValue(), lhs.getLocation());
+					} else {
+						return new IrBoolean(lb.getValue() != rb.getValue(), lhs.getLocation());
+					}
+				} else if(lhs.getType() == IrValue.NUMBER && rhs.getType() == IrValue.NUMBER) {
+					IrNumber ln = (IrNumber)lhs;
+					IrNumber rn = (IrNumber)rhs;
+					if(op == Token.EQUALS) {
+						return new IrBoolean(ln.getValue() == rn.getValue(), lhs.getLocation());
+					} else {
+						return new IrBoolean(ln.getValue() != rn.getValue(), lhs.getLocation());
+					}
+				} else {
+					throw new IrException(lhs.getLocation(), "Cannont compare left and right side using operator '" + op + "'!");
+				}
+			}
 			case Token.GTE:
 			case Token.LTE:
 			case '<':
 			case '>': {
-				return null;
+				if(lhs.getType() != IrValue.NUMBER && rhs.getType() != IrValue.NUMBER) {
+					throw new IrException(lhs.getLocation(), "Can only use operator '" + op + "' on numbers!");
+				}
+
+				IrNumber lhsn = (IrNumber)lhs;
+				IrNumber rhsn = (IrNumber)rhs;
+				switch (op) {
+					case Token.GTE: return new IrBoolean(lhsn.getValue() >= rhsn.getValue(), lhs.getLocation());
+					case Token.LTE: return new IrBoolean(lhsn.getValue() <= rhsn.getValue(), lhs.getLocation());
+					case '>': return new IrBoolean(lhsn.getValue() > rhsn.getValue(), lhs.getLocation());
+					case '<': return new IrBoolean(lhsn.getValue() < rhsn.getValue(), lhs.getLocation());
+
+					default: {
+						throw new IrException(lhs.getLocation(), "Internal compiler error!");
+					}
+				}
 			}
 
 			case '+': {
