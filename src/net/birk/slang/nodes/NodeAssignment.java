@@ -15,6 +15,10 @@ public class NodeAssignment extends Node {
 		this.rhs = rhs;
 	}
 
+	public int getOp() {
+		return op;
+	}
+
 	public Node getLhs() {
 		return lhs;
 	}

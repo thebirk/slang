@@ -193,7 +193,7 @@ public abstract class IrValue {
 			}
 			case Node.ASSIGNMENT: {
 				NodeAssignment na = (NodeAssignment) n;
-				IrAssignment irAssignment = new IrAssignment(generateExpr(na.getLhs()), generateExpr(na.getRhs()), na.getLocation());
+				IrAssignment irAssignment = new IrAssignment(na.getOp(), generateExpr(na.getLhs()), generateExpr(na.getRhs()), na.getLocation());
 				return irAssignment;
 			}
 			case Node.IF: {

@@ -48,12 +48,27 @@ fn returnTest() {
     println("sqrt(4): ", sqrt(4));
 }
 
+fn recurse() {
+    a -= 1;
+    recurse();
+}
+
+fn assignmentOperators() {
+    var a = 321;
+    a -= 22;
+    a += 11;
+    println(a);
+}
+
 fn main() {
     //genericTest();
     //concatTest();
     //functionRenameTest();
     //twoArgsTest();
     //returnTest();
+    //recurse();
+
+    assignmentOperators();
 
     eqTest();
 }
