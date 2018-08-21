@@ -2,18 +2,31 @@ package net.birk.slang;
 
 import net.birk.slang.ir.IrException;
 import net.birk.slang.ir.IrScope;
-import net.birk.slang.ir.stmt.IrStmtResult;
 import net.birk.slang.ir.value.*;
 import net.birk.slang.nodes.Node;
 import net.birk.slang.nodes.NodeFunc;
 import net.birk.slang.nodes.NodeVar;
 
-import javax.swing.text.html.HTMLDocument;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Map;
 
 public class Main {
+
+	/*
+	 * TODO:
+	 *  - IrJavaFunc:
+	 *   - Arguments that take the arg count
+	 *   - Flag to set varargs
+	 *  - IrSlangFunc:
+	 *   - Varargs flags
+	 *    - only varargs if last param looks like this "*ident)"
+	 *    - Pass all args as array
+	 *  - Add array type []
+	 *  - Add table type {}
+	 *  - Add userdata type (remember to implement the userdata tag)
+	 *
+	 */
 
 	public static void main(String[] args) {
 		Lexer lexer = null;
@@ -83,8 +96,7 @@ public class Main {
 			});
 
 			Timer.startSection("Ir Run");
-			//TODO: Eval all top level variables after adding them all
-			// ... Do we really need to do that? Yes!
+			// Eval all top level expression once we have them all added
 			for(Map.Entry<String, IrValue> kv : file.getSymbols().entrySet()) {
 				IrValue v = kv.getValue();
 				file.set(kv.getKey(), v.eval(file));
@@ -92,7 +104,11 @@ public class Main {
 
 			//TODO: Call main function
 			ArrayList<IrValue> mainArgs = new ArrayList<IrValue>();
-			((IrFunc)file.get("main")).call(file, mainArgs);
+			IrValue main = file.get("main");
+			if(main == null) {
+				throw new IrException(null, "Could not find the main function!");
+			}
+			((IrFunc)main).call(file, mainArgs);
 
 			System.out.println("\n============================");
 			Timer.printTimings();

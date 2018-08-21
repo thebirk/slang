@@ -47,15 +47,20 @@ public abstract class IrValue {
 			}
 
 			case '+': {
-				if(lhs.getType() == IrValue.STRING) {
-					//IrString result = new IrString();
-					return null;
-				} else if(rhs.getType() == IrValue.STRING) {
-
-					//break;
-					return null;
+				if(lhs.getType() == IrValue.STRING && rhs.getType() == IrValue.NUMBER) {
+					IrString lhstr = (IrString) lhs;
+					IrNumber rhstr = (IrNumber) rhs;
+					return new IrString(lhstr.getValue() + rhstr.getValue(), lhs.getLocation());
+				} else if(lhs.getType() == IrValue.NUMBER && rhs.getType() == IrValue.STRING) {
+					IrNumber lhstr = (IrNumber) lhs;
+					IrString rhstr = (IrString) rhs;
+					return new IrString(lhstr.getValue() + rhstr.getValue(), lhs.getLocation());
+				} else if(lhs.getType() == IrValue.STRING && rhs.getType() == IrValue.STRING) {
+					IrString lhstr = (IrString) lhs;
+					IrString rhstr = (IrString) rhs;
+					return new IrString(lhstr.getValue() + rhstr.getValue(), lhs.getLocation());
 				}
-				// fallthrough if we dont have a string
+				// fallthrough if we don't have a string
 			}
 			case '-':
 			case '*':
@@ -89,35 +94,47 @@ public abstract class IrValue {
 				throw new RuntimeException("Incomplete!");
 			}
 		}
-
-		/*if(lhs.getType() == IrValue.NUMBER && rhs.getType() == IrValue.NUMBER) {
-			IrNumber lhsn = (IrNumber)lhs;
-			IrNumber rhsn = (IrNumber)rhs;
-
-			switch (op) {
-				case '+': return new IrNumber(lhsn.getValue() + rhsn.getValue(), lhs.getLocation());
-				case '-': return new IrNumber(lhsn.getValue() - rhsn.getValue(), lhs.getLocation());
-				case '*': return new IrNumber(lhsn.getValue() * rhsn.getValue(), lhs.getLocation());
-				case '/': return new IrNumber(lhsn.getValue() / rhsn.getValue(), lhs.getLocation());
-				case '%': return new IrNumber(lhsn.getValue() % rhsn.getValue(), lhs.getLocation());
-
-				default: {
-					throw new RuntimeException("Invalid op!");
-				}
-			}
-		} else {
-			//TODO: Complete
-			//      - If both are numbers we do number ops
-			//      - If the first arg is a string we do string concatenation
-			throw new RuntimeException("Incomplete!");
-		}*/
 	}
 
 	public static IrValue unary(int op, IrValue value) {
 		// + - !
 		// + - -> numbers
 		// !   -> boolean, null
-		throw new RuntimeException("Incomplete");
+		switch (op){
+			case '+':
+			case '-': {
+				if(value.getType() != IrValue.NUMBER) {
+					throw new IrException(value.getLocation(), "Unary operator '" + op + "' is only supported on numbers!");
+				}
+
+				switch (op) {
+					case '+': return value;
+					case '-': {
+						IrNumber iv = (IrNumber) value;
+						IrNumber result = new IrNumber(-((IrNumber) value).getValue(), iv.getLocation());
+						return result;
+					}
+
+					default: {
+						throw new RuntimeException("Compiler error!");
+					}
+				}
+			}
+			case '!': {
+				if(value.getType() == IrValue.BOOLEAN) {
+					IrBoolean irBoolean = (IrBoolean) value;
+					return new IrBoolean(!irBoolean.getValue(), value.getLocation());
+				} else if (value.getType() == IrValue.NULL) {
+					return new IrBoolean(true, value.getLocation());
+				} else {
+					throw new IrException(value.getLocation(), "Unary operator '!' is only supported on booleans and null!");
+				}
+			}
+
+			default: {
+				throw new RuntimeException("Compiler error!");
+			}
+		}
 	}
 
 	public static boolean isTrue(IrValue eval) {
@@ -130,6 +147,9 @@ public abstract class IrValue {
 			}
 			case IrValue.STRING: {
 				throw new IrException(eval.getLocation(), "Cannot use a string as a boolean expression");
+			}
+			case IrValue.FUNC: {
+				throw new IrException(eval.getLocation(), "Cannot use a function as a boolean expression");
 			}
 			case IrValue.NULL: {
 				return false;
@@ -182,6 +202,12 @@ public abstract class IrValue {
 				} else {
 					return new IrIf(generateExpr(nif.getExpr()), generateBlock(nif.getBlock()), generateStmt(nif.getElse()), nif.getLocation());
 				}
+			}
+			case Node.FUNC: {
+				NodeFunc nfunc = (NodeFunc) n;
+				IrFunc irFunc = new IrSlangFunc(generateBlock(nfunc.getBlock()), nfunc.getArgs(), nfunc.getLocation());
+				IrVar irVar = new IrVar(nfunc.getIdent().getName(), irFunc, nfunc.getLocation());
+				return irVar;
 			}
 			default: {
 				throw new RuntimeException("Incomplete switch!");
