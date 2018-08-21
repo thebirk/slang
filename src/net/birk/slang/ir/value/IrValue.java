@@ -20,6 +20,8 @@ public abstract class IrValue {
 	public static final int UNARY = 6;
 	public static final int BOOLEAN = 7;
 	public static final int CALL = 8;
+	public static final int ARRAY = 9;
+	public static final int INDEX = 10;
 
 	private int type;
 	private SourceLoc location;
@@ -35,7 +37,7 @@ public abstract class IrValue {
 
 	public abstract IrValue eval(IrScope scope);
 
-	//NOTE: We do not resole lhs and rhs here. We expect you to cover that.
+	//NOTE: We do not resolve lhs and rhs here. We expect you to cover that.
 	public static IrValue doBinary(int op, IrValue lhs, IrValue rhs) {
 		// == !=        -> boolean, number, null
 		// <, <=, >, >= -> number
@@ -319,9 +321,21 @@ public abstract class IrValue {
 				}
 				return new IrCallValue(generateExpr(ncall.getExpr()), args, ncall.getLocation());
 			}
+			case Node.ARRAY_LITERAL: {
+				NodeArrayLiteral narr = (NodeArrayLiteral) expr;
+				ArrayList<IrValue> items = new ArrayList<IrValue>();
+				for(Node n : narr.getItems()) {
+					items.add(generateExpr(n));
+				}
+				return new IrArray(items, narr.getLocation());
+			}
+			case Node.INDEX: {
+				NodeIndex ni = (NodeIndex) expr;
+				return new IrIndex(generateExpr(ni.getExpr()), generateExpr(ni.getIndex()), expr.getLocation());
+			}
 
 			default: {
-				throw new RuntimeException("Invalid type value of missing case!");
+				throw new IrException(expr.getLocation(), "Invalid type value of missing case!");
 			}
 		}
 	}

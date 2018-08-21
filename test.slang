@@ -101,6 +101,15 @@ fn factorialTest() {
     println("factorial(5) = ", factorial(5));
 }
 
+fn arrayTest() {
+    var a = [1, 2, 3, 4];
+    a[2] += a[1] * 3;
+    println("a[2] = ", a[2]);
+
+    //a[100] = 1001;
+    //println("a[100] = ", a[100]);
+}
+
 fn main() {
     //genericTest();
     //concatTest();
@@ -111,6 +120,8 @@ fn main() {
     //assignmentOperators();
     //compTest();
     //eqTest();
+
+    arrayTest();
 
     factorialTest();
 }

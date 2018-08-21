@@ -21,6 +21,7 @@ public class Node {
 	public static final int IF = 15;
 	public static final int NULL = 16;
 	public static final int RETURN = 17;
+	public static final int ARRAY_LITERAL = 18;
 
 	private int type;
 	private SourceLoc location;

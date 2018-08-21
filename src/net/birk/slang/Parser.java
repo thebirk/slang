@@ -1,5 +1,6 @@
 package net.birk.slang;
 
+import net.birk.slang.ir.IrException;
 import net.birk.slang.nodes.*;
 
 import java.lang.reflect.Array;
@@ -40,6 +41,25 @@ public class Parser {
 		}
 		else if(matchToken(Token.NULL)) {
 			return new NodeNull(t.getSourceLoc());
+		}
+		else if(matchToken('[')) {
+			ArrayList<Node> items = new ArrayList<Node>();
+
+			if(matchToken(']')) {
+				return new NodeArrayLiteral(items, t.getSourceLoc());
+			}
+
+			do {
+				items.add(parseExpr());
+
+			} while(!isToken(']') && matchToken(','));
+			if(!matchToken(']')) {
+				System.err.println(currentToken.getSourceLoc() + ": Syntax error! Expected ']' while parsing array literal, got '" + currentToken.getTypeString() + "'.");
+				System.exit(1);
+				return null;
+			}
+
+			return new NodeArrayLiteral(items, t.getSourceLoc());
 		}
 		else if(matchToken('(')) {
 			Node expr = parseExpr();
