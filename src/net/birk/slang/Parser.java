@@ -40,6 +40,36 @@ public class Parser {
 		else if(matchToken(Token.NULL)) {
 			return new NodeNull(t.getSourceLoc());
 		}
+		else if(matchToken(Token.FUNC)) {
+			if(!matchToken('(')) {
+				System.err.println(currentToken.getSourceLoc() + ": Syntax error! Expected '(' after 'fn', got '" + currentToken.getTypeString() + "'.");
+				System.exit(1);
+				return null;
+			}
+
+			ArrayList<String> args = new ArrayList<String>();
+			if(!matchToken(')')) {
+				do {
+					Token id = currentToken;
+					if(!matchToken(Token.IDENT)) {
+						System.err.println(currentToken.getSourceLoc() + ": Syntax error! Expected 'identifier' while parsing argument list, got '" + currentToken.getTypeString() + "'.");
+						System.exit(1);
+						return null;
+					}
+					args.add(id.getLexeme());
+				} while (matchToken(','));
+
+				if(!matchToken(')')) {
+					System.err.println(currentToken.getSourceLoc() + ": Syntax error! Expected ')' while parsing argument list, got '" + currentToken.getTypeString() + "'.");
+					System.exit(1);
+					return null;
+				}
+			}
+
+			NodeBlock block = parseBlock();
+
+			return new NodeAnonFunc(args, block, t.getSourceLoc());
+		}
 		else if(matchToken('{')) {
 			ArrayList<NodeTableLiteral.Entry> entries = new ArrayList<NodeTableLiteral.Entry>();
 			if(matchToken('}')) {

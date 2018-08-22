@@ -171,16 +171,17 @@ fn whileTest() {
 //    println(fmt, ..args); // A 'spread' operator would be nice
 //}
 
-//fn anonFuncTest() {
-//    var myprint = fn(a) {
-//        println(a);
-//    };
-//    myprint("Anon print works");
-//
-//    fn(a, b) {
-//        println("a + b = ", a + b);
-//    }(1, 2);
-//}
+fn anonFuncTest() {
+    var myprint = fn(a) {
+        println(a);
+    };
+    myprint("Anon print works");
+
+    // We could get this to work if we really wanted, but its not really needed. Like this entire language...
+    //fn(a, b) {
+    //    println("a + b = ", a + b);
+    //}(1, 2);
+}
 
 fn utf8Test() {
     var 汉 = 123;
@@ -206,9 +207,10 @@ fn main() {
         utf8Test();
 
         factorialTest();
+        whileTest();
     }
 
-    whileTest();
+    anonFuncTest();
 
     return 123;
 }

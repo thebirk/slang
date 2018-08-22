@@ -367,6 +367,10 @@ public abstract class IrValue {
 				NodeTableLiteral nt = (NodeTableLiteral) expr;
 				return new IrTableLiteral(nt.getEntries(), nt.getLocation());
 			}
+			case Node.ANON_FUNC: {
+				NodeAnonFunc f = (NodeAnonFunc) expr;
+				return new IrSlangFunc(generateBlock(f.getBlock()), f.getArgs(), f.getLocation());
+			}
 
 			default: {
 				throw new IrException(expr.getLocation(), "Invalid type value of missing case!");
