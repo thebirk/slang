@@ -16,7 +16,6 @@ public class Main {
 
 	/*
 	 * TODO:
-	 *  - Add while
 	 *  - Add for
 	 *  - IrJavaFunc:
 	 *   - Arguments that take the arg count
@@ -33,6 +32,7 @@ public class Main {
 	 *  + Add array type []
 	 *  + Add len() function
 	 *  + Add table type {}
+	 *  + Add while
 	 *
 	 * MAYBEDO:
 	 *   - A seperate Table like structure for importing other files(aka. a Module) biggest difference would be

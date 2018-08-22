@@ -23,6 +23,7 @@ public class Node {
 	public static final int RETURN = 17;
 	public static final int ARRAY_LITERAL = 18;
 	public static final int TABLE_LITERAL = 19;
+	public static final int WHILE = 20;
 
 	private int type;
 	private SourceLoc location;

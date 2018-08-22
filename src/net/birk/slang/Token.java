@@ -22,6 +22,7 @@ public class Token {
 	public static final int NULL = 145;
 	public static final int RETURN = 146;
 	public static final int ELSE = 147;
+	public static final int WHILE = 148;
 
 	private int type;
 	private String lexeme;
@@ -76,6 +77,7 @@ public class Token {
 			case NULL: return "null";
 			case RETURN: return "return";
 			case ELSE: return "else";
+			case WHILE: return "while";
 		}
 
 		throw new RuntimeException("Invalid Token type: " + type);

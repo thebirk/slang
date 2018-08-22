@@ -11,6 +11,7 @@ public abstract class IrStmt {
 	public static final int CALL = 3;
 	public static final int BLOCK = 4;
 	public static final int IF = 5;
+	public static final int WHILE = 6;
 
 	private int type;
 	private SourceLoc location;

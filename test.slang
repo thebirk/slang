@@ -156,6 +156,15 @@ fn tableTest() {
     println("len(t) = ", len(t));
 }
 
+fn whileTest() {
+    var i = 0;
+    while i < 100 {
+        i += 1;
+        println("i = ", i);
+    }
+    println("Yay done!");
+}
+
 //fn printf(fmt, *args) {
 //    println(fmt, ..args); // A 'spread' operator would be nice
 //}
@@ -186,9 +195,10 @@ fn main() {
         //bigLoopTest();
         mathTest();
         arrayTest();
+        tableTest();
     }
 
-    tableTest();
+    whileTest();
 
     factorialTest();
     return 123;

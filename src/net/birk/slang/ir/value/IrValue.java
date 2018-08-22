@@ -287,6 +287,10 @@ public abstract class IrValue {
 				IrVar irVar = new IrVar(nfunc.getIdent().getName(), irFunc, nfunc.getLocation());
 				return irVar;
 			}
+			case Node.WHILE: {
+				NodeWhile nw = (NodeWhile) n;
+				return new IrWhile(generateExpr(nw.getCond()), generateBlock(nw.getBlock()), n.getLocation());
+			}
 			default: {
 				throw new RuntimeException("Incomplete switch!");
 			}
