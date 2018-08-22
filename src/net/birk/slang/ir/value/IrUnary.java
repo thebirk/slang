@@ -18,4 +18,15 @@ public class IrUnary extends IrValue {
 	public IrValue eval(IrScope scope) {
 		return IrValue.unary(op, expr.eval(scope));
 	}
+
+	@Override
+	public boolean isEqual(IrValue other) {
+		throw new RuntimeException("Internal compiler error! Cannot compiler IrUnary!");
+	}
+
+	@Override
+	public int hash() {
+		throw new RuntimeException("Internal compiler error! Cannot has IrUnary!");
+	}
+
 }

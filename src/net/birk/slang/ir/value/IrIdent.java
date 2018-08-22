@@ -27,4 +27,21 @@ public class IrIdent extends IrValue {
 		}
 	}
 
+	@Override
+	public boolean isEqual(IrValue other) {
+		if(other.getType() == IrValue.IDENT) {
+			IrIdent i = (IrIdent) other;
+			return i.getName().equals(name);
+		} else if(other.getType() == IrValue.STRING) {
+			IrString s = (IrString ) other;
+			return s.getValue().equals(name);
+		} else {
+			return false;
+		}
+	}
+
+	@Override
+	public int hash() {
+		return name.hashCode();
+	}
 }

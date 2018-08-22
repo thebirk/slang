@@ -21,4 +21,18 @@ public class IrBoolean extends IrValue {
 		return this;
 	}
 
+	@Override
+	public boolean isEqual(IrValue other) {
+		if(other.getType() == IrValue.BOOLEAN) {
+			IrBoolean b = (IrBoolean) other;
+			return b.getValue() == value;
+		} else {
+			return false;
+		}
+	}
+
+	@Override
+	public int hash() {
+		return Boolean.hashCode(value);
+	}
 }

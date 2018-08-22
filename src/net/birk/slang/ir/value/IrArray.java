@@ -22,6 +22,16 @@ public class IrArray extends IrValue {
 		return this;
 	}
 
+	@Override
+	public boolean isEqual(IrValue other) {
+		throw new RuntimeException("Incomplete!");
+	}
+
+	@Override
+	public int hash() {
+		throw new RuntimeException("Internal compiler error! Cannot hash IrArray!");
+	}
+
 	public ArrayList<IrValue> getItems() {
 		return items;
 	}

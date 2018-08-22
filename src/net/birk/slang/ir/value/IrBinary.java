@@ -21,4 +21,15 @@ public class IrBinary extends IrValue {
 		return IrValue.doBinary(op, lhs.eval(scope), rhs.eval(scope));
 	}
 
+	@Override
+	public boolean isEqual(IrValue other) {
+		throw new RuntimeException("Cannot compare IrBinary");
+	}
+
+	@Override
+	public int hash() {
+		throw new RuntimeException("Internal compiler error: Cannot hash an IrBinary!");
+	}
+
+
 }

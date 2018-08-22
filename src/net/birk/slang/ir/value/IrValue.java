@@ -8,6 +8,7 @@ import net.birk.slang.ir.stmt.*;
 import net.birk.slang.nodes.*;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public abstract class IrValue {
 
@@ -23,6 +24,7 @@ public abstract class IrValue {
 	public static final int ARRAY = 9;
 	public static final int INDEX = 10;
 	public static final int TABLE = 11;
+	public static final int TABLE_LITERAL = 12;
 
 	private int type;
 	private SourceLoc location;
@@ -34,10 +36,22 @@ public abstract class IrValue {
 
 	public abstract IrValue eval(IrScope scope);
 	public abstract int hash();
+	public abstract boolean isEqual(IrValue other);
 
 	@Override
-	public int hashCode() {
-		return hash();
+	public final boolean equals(Object obj) {
+		if(obj instanceof IrValue) {
+			return isEqual((IrValue) obj);
+		} else {
+			return false;
+		}
+	}
+
+	@Override
+	public final int hashCode() {
+		int h = hash();
+		//System.out.println("hashCode for type " + type + " at " + getLocation() + ": " + h);
+		return h;
 	}
 
 	public int getType() {
@@ -347,7 +361,7 @@ public abstract class IrValue {
 			}
 			case Node.TABLE_LITERAL: {
 				NodeTableLiteral nt = (NodeTableLiteral) expr;
-
+				return new IrTableLiteral(nt.getEntries(), nt.getLocation());
 			}
 
 			default: {

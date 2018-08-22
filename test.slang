@@ -113,6 +113,7 @@ fn arrayTest() {
     //println("a[100] = ", a[100]);
 
     println("len(a) = ", len(a));
+    println("a = ", a);
 }
 
 fn lenTest() {
@@ -138,10 +139,18 @@ fn mathTest() {
 
 fn tableTest() {
     var t = {
-        hello = "world!",
-        ["123test"] = "Hello, "
+        ["hello"] = "world!",
+        //["123test"] = "Hello, ",
+        [0] = "Test",
+        [123] = 321
     };
-    t["Lol"] = 123;
+    println("t = ", t);
+    t[0] = "Test!";
+    var helloV = "hello";
+    println("t[0] = ", t[0]);
+    println("t[123] = ", t[123]);
+
+    //t["Lol"] = 123;
     t[0] = 321;
 
     println("len(t) = ", len(t));
@@ -163,20 +172,23 @@ fn tableTest() {
 //}
 
 fn main() {
-    genericTest();
-    concatTest();
-    functionRenameTest();
-    twoArgsTest();
-    returnTest();
-    recurse();
-    assignmentOperators();
-    compTest();
-    eqTest();
-    lenTest();
-    //bigLoopTest();
-    mathTest();
+    if false {
+        genericTest();
+        concatTest();
+        functionRenameTest();
+        twoArgsTest();
+        returnTest();
+        recurse();
+        assignmentOperators();
+        compTest();
+        eqTest();
+        lenTest();
+        //bigLoopTest();
+        mathTest();
+        arrayTest();
+    }
 
-    arrayTest();
+    tableTest();
 
     factorialTest();
     return 123;

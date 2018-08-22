@@ -29,4 +29,14 @@ public class IrCallValue extends IrValue {
 		}
 		return ((IrFunc)func).call(scope, finalArgs);
 	}
+
+	@Override
+	public boolean isEqual(IrValue other) {
+		throw new RuntimeException("Cannot compare IrCallValue!");
+	}
+
+	@Override
+	public int hash() {
+		throw new RuntimeException("Internal compiler error! Cannont hash IrCallValue");
+	}
 }

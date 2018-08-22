@@ -29,9 +29,16 @@ public class IrIndex extends IrValue {
 			//TODO: Warn on non-integer index?
 
 			return array.getItems().get((int)indexN.getValue()).eval(scope);
-		}/* else if(value.getType() == IrValue.TABLE) {
-
-		} */else {
+		} else if(expr.getType() == IrValue.TABLE) {
+			IrTable table = (IrTable) expr;
+			index = index.eval(scope);
+			if(index == null) throw new RuntimeException("Internal compiler error! Java null cannot be used as index!");
+			IrValue result = table.getMap().get(index);
+			if(result == null) {
+				result = new IrNull(getLocation());
+			}
+			return result.eval(scope);
+		} else {
 			throw new IrException(getLocation(), "Trying to index non-indexable value!");
 		}
 	}
@@ -44,4 +51,13 @@ public class IrIndex extends IrValue {
 		return index;
 	}
 
+	@Override
+	public boolean isEqual(IrValue other) {
+		throw new RuntimeException("Internal compiler error! Cannot compare IrIndex!");
+	}
+
+	@Override
+	public int hash() {
+		throw new RuntimeException("Internal compiler error! Cannnot hash IrIndex!");
+	}
 }

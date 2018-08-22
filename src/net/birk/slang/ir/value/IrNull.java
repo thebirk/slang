@@ -13,4 +13,15 @@ public class IrNull extends IrValue {
 	public IrValue eval(IrScope scope) {
 		return this;
 	}
+
+	@Override
+	public int hash() {
+		return 0;
+	}
+
+	@Override
+	public boolean isEqual(IrValue other) {
+		return other.getType() == IrValue.NULL;
+	}
+
 }

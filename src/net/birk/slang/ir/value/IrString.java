@@ -20,4 +20,23 @@ public class IrString extends IrValue {
 	public IrValue eval(IrScope scope) {
 		return this;
 	}
+
+	@Override
+	public boolean isEqual(IrValue other) {
+		if(other.getType() == IrValue.IDENT) {
+			IrIdent i = (IrIdent) other;
+			return i.getName().equals(value);
+		} else if(other.getType() == IrValue.STRING) {
+			IrString s = (IrString ) other;
+			return s.getValue().equals(value);
+		} else {
+			return false;
+		}
+	}
+
+	@Override
+	public int hash() {
+		return value.hashCode();
+	}
+
 }

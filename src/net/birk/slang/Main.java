@@ -27,12 +27,19 @@ public class Main {
 	 *    - Pass all args as array
 	 *  - Add table type {}
 	 *  - Add userdata type (remember to implement the userdata tag)
+	 *  - 'import' keyword
+	 *   - 'use' keyword for builtins? or just a simple switch on the import name?
 	 *
 	 * TODONE:
 	 *  + Add array type []
 	 *  + Add len() function
+	 *  + Add table
 	 *
 	 * MAYBEDO:
+	 *   - A seperate Table like structure for importing other files(aka. a Module) biggest difference would be
+	 *     readonly variables
+	 *      - Or we could extand an IrTable and just provide some extra info like module name etc, or is this
+	 *        covered by SourceLoc?
 	 *   - Python like **kwargs for tables?
 	 *   - Argument list type hint
 	 *    - Return type as well?

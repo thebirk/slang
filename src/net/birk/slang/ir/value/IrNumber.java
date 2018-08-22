@@ -20,4 +20,20 @@ public class IrNumber extends IrValue {
 	public IrValue eval(IrScope scope) {
 		return this;
 	}
+
+	@Override
+	public boolean isEqual(IrValue other) {
+		if(other.getType() == IrValue.NUMBER) {
+			IrNumber n = (IrNumber) other;
+			return n.getValue() == value;
+		} else {
+			return false;
+		}
+	}
+
+	@Override
+	public int hash() {
+		return Double.hashCode(value);
+	}
+
 }

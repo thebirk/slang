@@ -24,4 +24,15 @@ public abstract class IrFunc extends IrValue {
 	public IrValue eval(IrScope scope) {
 		return this;
 	}
+
+	@Override
+	public boolean isEqual(IrValue other) {
+		throw new RuntimeException("Incomplete");
+	}
+
+	@Override
+	public int hash() {
+		//NOTE: Should IrFuncs be hashable?
+		throw new RuntimeException("Internal compiler error! IrFunc hash not implemented!");
+	}
 }

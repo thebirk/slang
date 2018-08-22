@@ -23,4 +23,14 @@ public class IrTable extends IrValue {
 		return map;
 	}
 
+	@Override
+	public boolean isEqual(IrValue other) {
+		throw new RuntimeException("Incomplete!");
+	}
+
+	@Override
+	public int hash() {
+		throw new RuntimeException("Internal compiler error! Cannot hash IrTable!");
+	}
+
 }

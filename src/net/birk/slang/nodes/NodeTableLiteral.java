@@ -21,6 +21,18 @@ public class NodeTableLiteral extends Node {
 			this.identOrIndex = identOrIndex;
 		}
 
+		public Node getExpr() {
+			return expr;
+		}
+
+		public Node getIdentOrIndex() {
+			return identOrIndex;
+		}
+
+		public int getType() {
+			return type;
+		}
+
 	}
 
 	private ArrayList<Entry> entries;

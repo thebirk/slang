@@ -7,35 +7,71 @@ import java.util.ArrayList;
 
 public class IrCore {
 
+	private static String stringifyValue(IrValue v) {
+		if(v == null) throw new IrException(null, "Internal compiler error! We should never get null here!");
+		switch (v.getType()) {
+			case IrValue.STRING: {
+				IrString str = (IrString) v;
+				return str.getValue();
+			}
+			case IrValue.NUMBER: {
+				IrNumber n = (IrNumber) v;
+				return "" + n.getValue();
+			}
+			case IrValue.NULL: {
+				return "null";
+			}
+			case IrValue.BOOLEAN: {
+				IrBoolean b = (IrBoolean)v;
+				return "" + b.getValue();
+			}
+			case IrValue.FUNC: {
+				throw new RuntimeException("Unimplemented!");
+			} //break;
+			case IrValue.TABLE: {
+				//TODO: Print it all
+				return "<table>";
+			}
+			case IrValue.ARRAY: {
+				StringBuilder builder = new StringBuilder();
+				builder.append("[ ");
+				IrArray irArray = (IrArray) v;
+				boolean prefix = false;
+				for(IrValue value : irArray.getItems()) {
+					if(prefix) {
+						builder.append(", " + stringifyValue(value));
+					} else {
+						prefix = true;
+						builder.append(stringifyValue(value));
+					}
+				}
+
+				builder.append(" ]");
+				return builder.toString();
+			}
+			default: {
+				return "<Type not supported by println. pls fix.>";
+			}
+		}
+	}
+
 	public static void addFunctions(IrScope global) {
 		//NOTE: Is this correct?
 		global.add("eps", new IrNumber(Math.ulp(1.0), new SourceLoc("builtin-eps", 1, 1)));
 		global.add("pi", new IrNumber(Math.PI, new SourceLoc("builtin-eps", 1, 1)));
 
+		//TODO: contains, check if table has key
+
+		//TODO: Array utilities
+		// - Check if contains value
+		// - First index of a value
+		// - All indices of a value
+
 		global.add("println", new IrJavaFunc(new SourceLoc("builtin-println", 1, 1)) {
 			@Override
 			public IrValue call(IrScope scope, ArrayList<IrValue> args) {
 				for(IrValue v : args) {
-					switch (v.getType()) {
-						case IrValue.STRING: {
-							IrString str = (IrString) v;
-							System.out.print(str.getValue());
-						} break;
-						case IrValue.NUMBER: {
-							IrNumber n = (IrNumber) v;
-							System.out.print(n.getValue());
-						} break;
-						case IrValue.NULL: {
-							System.out.print("null");
-						} break;
-						case IrValue.BOOLEAN: {
-							IrBoolean b = (IrBoolean)v;
-							System.out.print(b.getValue());
-						} break;
-						case IrValue.FUNC: {
-							throw new RuntimeException("Unimplemented!");
-						} //break;
-					}
+					System.out.print(stringifyValue(v));
 				}
 				System.out.println();
 				return new IrNull(getLocation());
@@ -65,7 +101,10 @@ public class IrCore {
 					IrString str = (IrString) v;
 					return new IrNumber(str.getValue().length(), v.getLocation());
 				}
-				// else if (v.getType() == IrValue.TABLE) {}
+				else if (v.getType() == IrValue.TABLE) {
+					IrTable table = (IrTable) v;
+					return new IrNumber(table.getMap().size(), v.getLocation());
+				}
 				else {
 					return new IrNull(null);
 				}
