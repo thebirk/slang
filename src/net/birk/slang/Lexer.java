@@ -1,9 +1,8 @@
 package net.birk.slang;
 
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 
 public class Lexer {
@@ -15,7 +14,8 @@ public class Lexer {
 
 	public Lexer(String path) throws FileNotFoundException {
 		this.path = path;
-		fr = new BufferedReader(new FileReader(path));
+		//fr = new BufferedReader(new FileReader(path));
+		fr = new BufferedReader(new InputStreamReader(new FileInputStream(path), StandardCharsets.UTF_8));
 		tokens = new ArrayList<Token>();
 		line = 1;
 		offset = 1;
@@ -106,8 +106,7 @@ public class Lexer {
 			line++;
 			return readToken();
 		}
-
-		if(c == '=' && c2 == '=') {
+		else if(c == '=' && c2 == '=') {
 			offset += 2;
 			return new Token(Token.EQUALS, "==", new SourceLoc(path, line, offset - 2));
 		}

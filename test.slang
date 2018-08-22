@@ -158,9 +158,11 @@ fn tableTest() {
 
 fn whileTest() {
     var i = 0;
-    while i < 100 {
+    while i < 100000 {
         i += 1;
-        println("i = ", i);
+        if i % 10000 == 0 {
+            println("i = ", i);
+        }
     }
     println("Yay done!");
 }
@@ -180,8 +182,13 @@ fn whileTest() {
 //    }(1, 2);
 //}
 
+fn utf8Test() {
+    var 汉 = 123;
+    println("汉 = ",  汉);
+}
+
 fn main() {
-    if false do {
+    if true {
         genericTest();
         concatTest();
         functionRenameTest();
@@ -196,10 +203,12 @@ fn main() {
         mathTest();
         arrayTest();
         tableTest();
+        utf8Test();
+
+        factorialTest();
     }
 
     whileTest();
 
-    factorialTest();
     return 123;
 }
