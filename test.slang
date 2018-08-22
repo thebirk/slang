@@ -115,8 +115,10 @@ fn arrayTest() {
     println("len(a) = ", len(a));
 }
 
-fn stringLengthTest() {
+fn lenTest() {
     println("len('Hello, world!') = ", len("Hello, world!"));
+    println("len(1) = ", len(1));
+    println("len([1, 2, 3, 4, 5]) = ", len([1, 2, 3, 4, 5]));
 }
 
 var bigLoopCounter = 0;
@@ -127,33 +129,52 @@ fn bigLoopTest() {
     bigLoopTest();
 }
 
-//fn tableTest() {
-//    var t = {
-//        hello = "world!",
-//        "123test" = "Hello, "
-//    };
-//    t["Lol"] = 123;
-//    t[0] = 321;
-//
-//    println("len(t) = ", len(t));
-//}
+fn mathTest() {
+    println("(2) + (17*2-30) * (5)+2 - (8/2)*4 should be 8 we get ", (2) + (17*2-30) * (5)+2 - (8/2)*4);
+    println("'2*3*4/8 -   5/2*4 +  6 + 0/3  ' should be -1 we get ", 2*3*4/8 -   5/2*4 +  6 + 0/3   );
+    println("-(2) = ", -(2));
+    println("1 + eps = ", 1 + eps);
+}
+
+fn tableTest() {
+    var t = {
+        hello = "world!",
+        ["123test"] = "Hello, "
+    };
+    t["Lol"] = 123;
+    t[0] = 321;
+
+    println("len(t) = ", len(t));
+}
 
 //fn printf(fmt, *args) {
 //    println(fmt, ..args); // A 'spread' operator would be nice
+//}
+
+//fn anonFuncTest() {
+//    var myprint = fn(a) {
+//        println(a);
+//    };
+//    myprint("Anon print works");
+//
+//    fn(a, b) {
+//        println("a + b = ", a + b);
+//    }(1, 2);
 //}
 
 fn main() {
     genericTest();
     concatTest();
     functionRenameTest();
-    //twoArgsTest();
+    twoArgsTest();
     returnTest();
     recurse();
     assignmentOperators();
     compTest();
     eqTest();
-    stringLengthTest();
+    lenTest();
     //bigLoopTest();
+    mathTest();
 
     arrayTest();
 

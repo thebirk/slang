@@ -58,18 +58,18 @@ public class Main {
 
 			Timer.startSection("Ir Gen");
 			IrScope global = new IrScope(null);
-			IrScope file = new IrScope(global);
+			IrScope fileScope = new IrScope(global);
 			for(Node n : nodes) {
 				switch (n.getType()) {
 					case Node.VAR: {
 						NodeVar var = (NodeVar) n;
-						if(!file.add(var.getName(), IrValue.generateExpr(var.getExpr()))) {
+						if(!fileScope.add(var.getName(), IrValue.generateExpr(var.getExpr()))) {
 							throw new IrException(var.getLocation(), "Symbol '" + var.getName() + "' already exists!");
 						}
 					} break;
 					case Node.FUNC: {
 						NodeFunc f = (NodeFunc) n;
-						if(!file.add(f.getIdent().getName(), IrValue.generateExpr(n))) {
+						if(!fileScope.add(f.getIdent().getName(), IrValue.generateExpr(n))) {
 							throw new IrException(f.getLocation(), "Symbol '" + f.getIdent().getName() + "' already exists!");
 						}
 					} break;
@@ -85,23 +85,31 @@ public class Main {
 
 			Timer.startSection("Ir Run");
 			// Eval all top level expression once we have them all added
-			for(Map.Entry<String, IrValue> kv : file.getSymbols().entrySet()) {
+			for(Map.Entry<String, IrValue> kv : fileScope.getSymbols().entrySet()) {
 				IrValue v = kv.getValue();
-				file.set(kv.getKey(), v.eval(file));
+				fileScope.set(kv.getKey(), v.eval(fileScope));
 			}
 
 			// Call main if it exists
+
 			ArrayList<IrValue> mainArgs = new ArrayList<IrValue>();
-			IrValue main = file.get("main");
-			if(main == null) {
-				throw new IrException(null, "Could not find the main function!");
-			}
-			IrValue returnValue = ((IrFunc)main).call(file, mainArgs);
+			IrValue returnValue = fileScope.callFunction("main", mainArgs);
 			int returnCode = 0;
 			if(returnValue.getType() == IrValue.NUMBER) {
 				IrNumber n = (IrNumber) returnValue;
 				returnCode = (int) n.getValue();
 			}
+			/*
+			IrValue main = fileScope.get("main");
+			if(main == null) {
+				throw new IrException(null, "Could not find the main function!");
+			}
+			IrValue returnValue = ((IrFunc)main).call(fileScope, mainArgs);
+			int returnCode = 0;
+			if(returnValue.getType() == IrValue.NUMBER) {
+				IrNumber n = (IrNumber) returnValue;
+				returnCode = (int) n.getValue();
+			}*/
 
 			System.out.println("\n============================");
 			Timer.printTimings();

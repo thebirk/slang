@@ -1,9 +1,7 @@
 package net.birk.slang;
 
-import net.birk.slang.ir.IrException;
 import net.birk.slang.nodes.*;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -41,6 +39,61 @@ public class Parser {
 		}
 		else if(matchToken(Token.NULL)) {
 			return new NodeNull(t.getSourceLoc());
+		}
+		else if(matchToken('{')) {
+			ArrayList<NodeTableLiteral.Entry> entries = new ArrayList<NodeTableLiteral.Entry>();
+			if(matchToken('}')) {
+				return new NodeTableLiteral(entries, t.getSourceLoc());
+			}
+
+			do {
+				if(isToken(Token.IDENT)) {
+					Token ident = currentToken;
+					nextToken();
+
+					if(!matchToken('=')) {
+						System.err.println(currentToken.getSourceLoc() + ": Syntax error! Expected '=' while parsing table literal, got '" + currentToken.getTypeString() + "'.");
+						System.exit(1);
+						return null;
+					}
+
+					Node expr = parseExpr();
+
+					entries.add(new NodeTableLiteral.Entry(NodeTableLiteral.IDENT_ENTRY, expr, new NodeIdent(ident.getLexeme(), ident.getSourceLoc())));
+				} else if(matchToken('[')) {
+					//TODO: What to do when we have an array instead of an index
+					// { [1,2] = 32 }. Is this bad syntax or?
+
+					Node index = parseExpr();
+					if(!matchToken(']')) {
+						System.err.println(currentToken.getSourceLoc() + ": Syntax error! Expected ']' while parsing table literal, got '" + currentToken.getTypeString() + "'.");
+						System.exit(1);
+						return null;
+					}
+
+					if(!matchToken('=')) {
+						System.err.println(currentToken.getSourceLoc() + ": Syntax error! Expected '=' while parsing table literal, got '" + currentToken.getTypeString() + "'.");
+						System.exit(1);
+						return null;
+					}
+
+					Node expr = parseExpr();
+
+					entries.add(new NodeTableLiteral.Entry(NodeTableLiteral.INDEX_ENTRY, expr, index));
+				} else {
+					System.err.println(currentToken.getSourceLoc() + ": Syntax error! Expected 'identifier' or '[' while parsing table literal, got '" + currentToken.getTypeString() + "'.");
+					System.exit(1);
+					return null;
+				}
+			} while(!isToken('}') && matchToken(','));
+
+			if(!matchToken('}')) {
+				System.err.println(currentToken.getSourceLoc() + ": Syntax error! Expected '}' while parsing table literal, got '" + currentToken.getTypeString() + "'.");
+				System.exit(1);
+				return null;
+			}
+
+			return new NodeTableLiteral(entries, t.getSourceLoc());
 		}
 		else if(matchToken('[')) {
 			ArrayList<Node> items = new ArrayList<Node>();

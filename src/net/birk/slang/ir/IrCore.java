@@ -8,6 +8,10 @@ import java.util.ArrayList;
 public class IrCore {
 
 	public static void addFunctions(IrScope global) {
+		//NOTE: Is this correct?
+		global.add("eps", new IrNumber(Math.ulp(1.0), new SourceLoc("builtin-eps", 1, 1)));
+		global.add("pi", new IrNumber(Math.PI, new SourceLoc("builtin-eps", 1, 1)));
+
 		global.add("println", new IrJavaFunc(new SourceLoc("builtin-println", 1, 1)) {
 			@Override
 			public IrValue call(IrScope scope, ArrayList<IrValue> args) {
@@ -34,7 +38,7 @@ public class IrCore {
 					}
 				}
 				System.out.println();
-				return new IrNull(null);
+				return new IrNull(getLocation());
 			}
 		});
 
@@ -63,10 +67,12 @@ public class IrCore {
 				}
 				// else if (v.getType() == IrValue.TABLE) {}
 				else {
-					return null;
+					return new IrNull(null);
 				}
 			}
 		});
+
+		//TODO: Add assert
 	}
 
 }

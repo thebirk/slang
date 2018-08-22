@@ -22,6 +22,7 @@ public abstract class IrValue {
 	public static final int CALL = 8;
 	public static final int ARRAY = 9;
 	public static final int INDEX = 10;
+	public static final int TABLE = 11;
 
 	private int type;
 	private SourceLoc location;
@@ -31,11 +32,22 @@ public abstract class IrValue {
 		this.location = location;
 	}
 
+	public abstract IrValue eval(IrScope scope);
+	public abstract int hash();
+
+	@Override
+	public int hashCode() {
+		return hash();
+	}
+
 	public int getType() {
 		return type;
 	}
 
-	public abstract IrValue eval(IrScope scope);
+
+	public SourceLoc getLocation() {
+		return location;
+	}
 
 	//NOTE: We do not resolve lhs and rhs here. We expect you to cover that.
 	public static IrValue doBinary(int op, IrValue lhs, IrValue rhs) {
@@ -333,15 +345,15 @@ public abstract class IrValue {
 				NodeIndex ni = (NodeIndex) expr;
 				return new IrIndex(generateExpr(ni.getExpr()), generateExpr(ni.getIndex()), expr.getLocation());
 			}
+			case Node.TABLE_LITERAL: {
+				NodeTableLiteral nt = (NodeTableLiteral) expr;
+
+			}
 
 			default: {
 				throw new IrException(expr.getLocation(), "Invalid type value of missing case!");
 			}
 		}
-	}
-
-	public SourceLoc getLocation() {
-		return location;
 	}
 
 }

@@ -25,7 +25,8 @@ public class IrAssignment extends IrStmt {
 			lhs = lhs.eval(scope);
 		}
 		if(lhs.getType() != IrValue.IDENT && lhs.getType() != IrValue.INDEX) {
-			throw new IrException(lhs.getLocation(), "Left hand side of assignment cannot be assigned to!");
+			throw new IrException(lhs.getLocation(), "Cannot assign to left hand of assignment!");
+			//throw new IrException(lhs.getLocation(), "Left hand side of assignment cannot be assigned to!");
 		}
 
 

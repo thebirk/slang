@@ -1,7 +1,10 @@
 package net.birk.slang.ir;
 
+import net.birk.slang.ir.value.IrFunc;
+import net.birk.slang.ir.value.IrNull;
 import net.birk.slang.ir.value.IrValue;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class IrScope {
@@ -12,6 +15,15 @@ public class IrScope {
 	public IrScope(IrScope parent) {
 		this.parent = parent;
 		symbols = new HashMap<String, IrValue>();
+	}
+
+	public IrValue callFunction(String name, ArrayList<IrValue> args) {
+		IrValue v = get(name);
+		if(v == null) {
+			throw new IrException(null, "Trying to call non-existing function '" + name + "'!");
+		}
+		IrFunc f = (IrFunc) v;
+		return f.call(this, args);
 	}
 
 	public boolean add(String name, IrValue value) {
