@@ -4,6 +4,7 @@ import net.birk.slang.SourceLoc;
 import net.birk.slang.ir.value.*;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 public class IrCore {
 
@@ -22,15 +23,30 @@ public class IrCore {
 				return "null";
 			}
 			case IrValue.BOOLEAN: {
-				IrBoolean b = (IrBoolean)v;
+				IrBoolean b = (IrBoolean) v;
 				return "" + b.getValue();
 			}
 			case IrValue.FUNC: {
 				throw new RuntimeException("Unimplemented!");
 			} //break;
 			case IrValue.TABLE: {
+				IrTable table = (IrTable) v;
 				//TODO: Print it all
-				return "<table>";
+				StringBuilder builder = new StringBuilder();
+				builder.append("{ ");
+
+				boolean prefix = false;
+				for(Map.Entry<IrValue, IrValue> e : table.getMap().entrySet()) {
+					if(prefix) {
+						builder.append(", [" + stringifyValue(e.getKey()) + "] = " + stringifyValue(e.getValue()));
+					} else {
+						prefix = true;
+						builder.append("[" + stringifyValue(e.getKey()) + "] = " + stringifyValue(e.getValue()));
+					}
+				}
+				builder.append(" }");
+
+				return builder.toString();
 			}
 			case IrValue.ARRAY: {
 				StringBuilder builder = new StringBuilder();

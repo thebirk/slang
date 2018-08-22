@@ -25,7 +25,6 @@ public class Main {
 	 *   - Varargs flags
 	 *    - only varargs if last param looks like this "*ident", turns into array
 	 *    - Pass all args as array
-	 *  - Add table type {}
 	 *  - Add userdata type (remember to implement the userdata tag)
 	 *  - 'import' keyword
 	 *   - 'use' keyword for builtins? or just a simple switch on the import name?
@@ -33,7 +32,7 @@ public class Main {
 	 * TODONE:
 	 *  + Add array type []
 	 *  + Add len() function
-	 *  + Add table
+	 *  + Add table type {}
 	 *
 	 * MAYBEDO:
 	 *   - A seperate Table like structure for importing other files(aka. a Module) biggest difference would be

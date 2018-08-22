@@ -172,7 +172,7 @@ fn tableTest() {
 //}
 
 fn main() {
-    if false {
+    if false do {
         genericTest();
         concatTest();
         functionRenameTest();
