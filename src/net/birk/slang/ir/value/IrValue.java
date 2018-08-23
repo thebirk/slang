@@ -84,23 +84,35 @@ public abstract class IrValue {
 							return new IrBoolean(false, lhs.getLocation());
 						}
 					}
-				} else if(lhs.getType() == IrValue.Type.BOOLEAN && rhs.getType() == IrValue.Type.BOOLEAN) {
-					IrBoolean lb = (IrBoolean)lhs;
-					IrBoolean rb = (IrBoolean)rhs;
+				}
+				else if(lhs.getType() == IrValue.Type.BOOLEAN && rhs.getType() == IrValue.Type.BOOLEAN) {
+					IrBoolean lb = (IrBoolean) lhs;
+					IrBoolean rb = (IrBoolean) rhs;
 					if(op == Token.EQUALS) {
 						return new IrBoolean(lb.getValue() == rb.getValue(), lhs.getLocation());
 					} else {
 						return new IrBoolean(lb.getValue() != rb.getValue(), lhs.getLocation());
 					}
-				} else if(lhs.getType() == IrValue.Type.NUMBER && rhs.getType() == IrValue.Type.NUMBER) {
-					IrNumber ln = (IrNumber)lhs;
-					IrNumber rn = (IrNumber)rhs;
+				}
+				else if(lhs.getType() == IrValue.Type.NUMBER && rhs.getType() == IrValue.Type.NUMBER) {
+					IrNumber ln = (IrNumber) lhs;
+					IrNumber rn = (IrNumber) rhs;
 					if(op == Token.EQUALS) {
 						return new IrBoolean(ln.getValue() == rn.getValue(), lhs.getLocation());
 					} else {
 						return new IrBoolean(ln.getValue() != rn.getValue(), lhs.getLocation());
 					}
-				} else {
+				}
+				else if(lhs.getType() == IrValue.Type.STRING && rhs.getType() == IrValue.Type.STRING) {
+					IrString ln = (IrString) lhs;
+					IrString rn = (IrString) rhs;
+					if(op == Token.EQUALS) {
+						return new IrBoolean(ln.getValue() == rn.getValue(), lhs.getLocation());
+					} else {
+						return new IrBoolean(ln.getValue() != rn.getValue(), lhs.getLocation());
+					}
+				}
+				else {
 					throw new IrException(lhs.getLocation(), "Cannont compare left and right side using operator '" + op + "'!");
 				}
 			}

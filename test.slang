@@ -139,8 +139,8 @@ fn mathTest() {
 
 fn tableTest() {
     var t = {
-        ["hello"] = "world!",
-        //["123test"] = "Hello, ",
+        hello = "world!",
+        ["123test"] = "Hello, ",
         [0] = "Test",
         [123] = 321
     };
@@ -188,9 +188,41 @@ fn anonFuncTest() {
     //}(1, 2);
 }
 
+// Have this be in some runtime.slang file and have its scope be global. Add builtin as the top-level scope
+// That way we can have language implemented functions
+//fn assert(cond, *msg) {
+//    if(!cond) {
+//        var msg = "Assertion failed! ";
+//        var i = 0;
+//        while i < len(fmt) {
+//            msg += fmt[i];
+//            i += 1;
+//        }
+//        exit(1);
+//        //trap(); Or something that will hard crash with a stack print and error location
+//    }
+//}
+
+fn typeTest() {
+    fn addNumbers(a, b) {
+        assert(type(a) == type(0));
+        assert(type(b) == type(0));
+
+        return a + b;
+    }
+
+    println("addNumbers(1, 2) = ", addNumbers(1, 2));
+    // Next line should fail
+    //println("addNumbers('Not a number', 2) = ", addNumbers("Not a number", 2));
+}
+
 fn assertTest() {
     assert(1 == 1);
     //assert(1 == 2);
+    assert(!false);
+
+    //assert(false);
+    //assert(false, "This value failed: ", false);
 }
 
 //fn printf(fmt, *args) {
@@ -198,7 +230,7 @@ fn assertTest() {
 //}
 
 fn main() {
-    if true {
+    if false {
         genericTest();
         concatTest();
         functionRenameTest();
@@ -218,9 +250,10 @@ fn main() {
 
         factorialTest();
         whileTest();
+        anonFuncTest();
     }
 
-    anonFuncTest();
+    typeTest();
 
     return 123;
 }

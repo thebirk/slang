@@ -122,7 +122,7 @@ public class IrCore {
 					return new IrNumber(table.getMap().size(), v.getLocation());
 				}
 				else {
-					return new IrNull(null);
+					return new IrNumber(0, null);
 				}
 			}
 		});
@@ -134,6 +134,35 @@ public class IrCore {
 					throw new IrException(getLocation(), "Assertion failed!");
 				}
 				return new IrBoolean(true, null);
+			}
+		});
+
+		global.add("type", new IrJavaFunc(1, new SourceLoc("builtin-type", 1, 1)) {
+			@Override
+			public IrValue javaCall(IrScope scope, ArrayList<IrValue> args) {
+				// We could have this return an array if we get more than one argument
+
+				IrValue v = args.get(0);
+				String result = "";
+				switch (v.getType()) {
+					case NUMBER: result = "number"; break;
+					case STRING: result = "string"; break;
+					case NULL: result = "null"; break;
+					case BOOLEAN: result = "boolean"; break;
+					case USERDATA: {
+						IrUserdata d = (IrUserdata) v;
+						result = "userdata#" + d.getUserType();
+						break;
+					}
+					case FUNC: result = "func"; break;
+					case ARRAY: result = "array"; break;
+					case TABLE: result = "table"; break;
+					default: {
+						throw new RuntimeException("Internal compiler error! This value type should never ever be passed as a value! Type: " + v.getType());
+					}
+				}
+
+				return new IrString(result, null);
 			}
 		});
 		//TODO: Add assert
