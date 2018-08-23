@@ -13,7 +13,7 @@ public class IrArray extends IrValue {
 	private ArrayList<IrValue> items;
 
 	public IrArray(ArrayList<IrValue> items, SourceLoc location) {
-		super(IrValue.ARRAY, location);
+		super(IrValue.Type.ARRAY, location);
 		this.items = items;
 	}
 

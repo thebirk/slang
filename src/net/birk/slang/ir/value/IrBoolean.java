@@ -8,7 +8,7 @@ public class IrBoolean extends IrValue {
 	private boolean value;
 
 	public IrBoolean(boolean value, SourceLoc location) {
-		super(IrValue.BOOLEAN, location);
+		super(IrValue.Type.BOOLEAN, location);
 		this.value = value;
 	}
 
@@ -23,7 +23,7 @@ public class IrBoolean extends IrValue {
 
 	@Override
 	public boolean isEqual(IrValue other) {
-		if(other.getType() == IrValue.BOOLEAN) {
+		if(other.getType() == IrValue.Type.BOOLEAN) {
 			IrBoolean b = (IrBoolean) other;
 			return b.getValue() == value;
 		} else {

@@ -104,7 +104,7 @@ public class Main {
 			ArrayList<IrValue> mainArgs = new ArrayList<IrValue>();
 			IrValue returnValue = fileScope.callFunction("main", mainArgs);
 			int returnCode = 0;
-			if(returnValue.getType() == IrValue.NUMBER) {
+			if(returnValue.getType() == IrValue.Type.NUMBER) {
 				IrNumber n = (IrNumber) returnValue;
 				returnCode = (int) n.getValue();
 			}

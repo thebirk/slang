@@ -13,7 +13,7 @@ public class IrTableLiteral extends IrValue {
 	private ArrayList<NodeTableLiteral.Entry> entries;
 
 	public IrTableLiteral(ArrayList<NodeTableLiteral.Entry> entries, SourceLoc location) {
-		super(IrValue.TABLE_LITERAL, location);
+		super(IrValue.Type.TABLE_LITERAL, location);
 		this.entries = entries;
 	}
 
@@ -26,7 +26,7 @@ public class IrTableLiteral extends IrValue {
 				map.put(generateExpr(e.getIdentOrIndex()).eval(scope), generateExpr(e.getExpr()).eval(scope));
 			} else if(e.getType() == NodeTableLiteral.IDENT_ENTRY) {
 				IrValue ident = generateExpr(e.getIdentOrIndex());
-				if(ident.getType() != IrValue.IDENT) throw new RuntimeException("Internal compiler error! This entry is lying about its index type!");
+				if(ident.getType() != IrValue.Type.IDENT) throw new RuntimeException("Internal compiler error! This entry is lying about its index type!");
 				map.put(ident, generateExpr(e.getExpr()).eval(scope));
 			} else {
 				throw new RuntimeException("Internal compiler error! Invalid table entry kind!");

@@ -12,7 +12,23 @@ import java.util.HashMap;
 
 public abstract class IrValue {
 
-	public static final int NULL = 0;
+	public enum Type {
+		NULL,
+		STRING,
+		NUMBER,
+		FUNC,
+		BINARY,
+		IDENT,
+		UNARY,
+		BOOLEAN,
+		CALL,
+		ARRAY,
+		INDEX,
+		TABLE,
+		TABLE_LITERAL,
+	}
+
+	/*public static final int NULL = 0;
 	public static final int STRING = 1;
 	public static final int NUMBER = 2;
 	public static final int FUNC = 3;
@@ -24,12 +40,12 @@ public abstract class IrValue {
 	public static final int ARRAY = 9;
 	public static final int INDEX = 10;
 	public static final int TABLE = 11;
-	public static final int TABLE_LITERAL = 12;
+	public static final int TABLE_LITERAL = 12;*/
 
-	private int type;
+	private Type type;
 	private SourceLoc location;
 
-	public IrValue(int type, SourceLoc location) {
+	public IrValue(Type type, SourceLoc location) {
 		this.type = type;
 		this.location = location;
 	}
@@ -54,7 +70,7 @@ public abstract class IrValue {
 		return h;
 	}
 
-	public int getType() {
+	public Type getType() {
 		return type;
 	}
 
@@ -71,8 +87,8 @@ public abstract class IrValue {
 		switch(op) {
 			case Token.EQUALS:
 			case Token.NE: {
-				if(lhs.getType() == IrValue.NULL || rhs.getType() == IrValue.NULL) {
-					if(lhs.getType() == IrValue.NULL && rhs.getType() == IrValue.NULL) {
+				if(lhs.getType() == IrValue.Type.NULL || rhs.getType() == IrValue.Type.NULL) {
+					if(lhs.getType() == IrValue.Type.NULL && rhs.getType() == IrValue.Type.NULL) {
 						if(op == Token.EQUALS) return new IrBoolean(true, lhs.getLocation());
 						else return new IrBoolean(false, lhs.getLocation());
 					} else {
@@ -82,7 +98,7 @@ public abstract class IrValue {
 							return new IrBoolean(false, lhs.getLocation());
 						}
 					}
-				} else if(lhs.getType() == IrValue.BOOLEAN && rhs.getType() == IrValue.BOOLEAN) {
+				} else if(lhs.getType() == IrValue.Type.BOOLEAN && rhs.getType() == IrValue.Type.BOOLEAN) {
 					IrBoolean lb = (IrBoolean)lhs;
 					IrBoolean rb = (IrBoolean)rhs;
 					if(op == Token.EQUALS) {
@@ -90,7 +106,7 @@ public abstract class IrValue {
 					} else {
 						return new IrBoolean(lb.getValue() != rb.getValue(), lhs.getLocation());
 					}
-				} else if(lhs.getType() == IrValue.NUMBER && rhs.getType() == IrValue.NUMBER) {
+				} else if(lhs.getType() == IrValue.Type.NUMBER && rhs.getType() == IrValue.Type.NUMBER) {
 					IrNumber ln = (IrNumber)lhs;
 					IrNumber rn = (IrNumber)rhs;
 					if(op == Token.EQUALS) {
@@ -106,7 +122,7 @@ public abstract class IrValue {
 			case Token.LTE:
 			case '<':
 			case '>': {
-				if(lhs.getType() != IrValue.NUMBER && rhs.getType() != IrValue.NUMBER) {
+				if(lhs.getType() != IrValue.Type.NUMBER && rhs.getType() != IrValue.Type.NUMBER) {
 					throw new IrException(lhs.getLocation(), "Can only use operator '" + op + "' on numbers!");
 				}
 
@@ -125,15 +141,15 @@ public abstract class IrValue {
 			}
 
 			case '+': {
-				if(lhs.getType() == IrValue.STRING && rhs.getType() == IrValue.NUMBER) {
+				if(lhs.getType() == IrValue.Type.STRING && rhs.getType() == IrValue.Type.NUMBER) {
 					IrString lhstr = (IrString) lhs;
 					IrNumber rhstr = (IrNumber) rhs;
 					return new IrString(lhstr.getValue() + rhstr.getValue(), lhs.getLocation());
-				} else if(lhs.getType() == IrValue.NUMBER && rhs.getType() == IrValue.STRING) {
+				} else if(lhs.getType() == IrValue.Type.NUMBER && rhs.getType() == IrValue.Type.STRING) {
 					IrNumber lhstr = (IrNumber) lhs;
 					IrString rhstr = (IrString) rhs;
 					return new IrString(lhstr.getValue() + rhstr.getValue(), lhs.getLocation());
-				} else if(lhs.getType() == IrValue.STRING && rhs.getType() == IrValue.STRING) {
+				} else if(lhs.getType() == IrValue.Type.STRING && rhs.getType() == IrValue.Type.STRING) {
 					IrString lhstr = (IrString) lhs;
 					IrString rhstr = (IrString) rhs;
 					return new IrString(lhstr.getValue() + rhstr.getValue(), lhs.getLocation());
@@ -144,9 +160,9 @@ public abstract class IrValue {
 			case '*':
 			case '/':
 			case '%': {
-				if(lhs.getType() != IrValue.NUMBER) {
+				if(lhs.getType() != IrValue.Type.NUMBER) {
 					throw new IrException(lhs.getLocation(), "Can only use operator '" + ((char)op) + "' on numbers!");
-				} else if(rhs.getType() != IrValue.NUMBER) {
+				} else if(rhs.getType() != IrValue.Type.NUMBER) {
 					throw new IrException(lhs.getLocation(), "Can only use operator '" + ((char)op) + "' on numbers!");
 				}
 
@@ -181,7 +197,7 @@ public abstract class IrValue {
 		switch (op){
 			case '+':
 			case '-': {
-				if(value.getType() != IrValue.NUMBER) {
+				if(value.getType() != IrValue.Type.NUMBER) {
 					throw new IrException(value.getLocation(), "Unary operator '" + op + "' is only supported on numbers!");
 				}
 
@@ -199,10 +215,10 @@ public abstract class IrValue {
 				}
 			}
 			case '!': {
-				if(value.getType() == IrValue.BOOLEAN) {
+				if(value.getType() == IrValue.Type.BOOLEAN) {
 					IrBoolean irBoolean = (IrBoolean) value;
 					return new IrBoolean(!irBoolean.getValue(), value.getLocation());
-				} else if (value.getType() == IrValue.NULL) {
+				} else if (value.getType() == IrValue.Type.NULL) {
 					return new IrBoolean(true, value.getLocation());
 				} else {
 					throw new IrException(value.getLocation(), "Unary operator '!' is only supported on booleans and null!");
@@ -217,19 +233,19 @@ public abstract class IrValue {
 
 	public static boolean isTrue(IrValue eval) {
 		switch (eval.getType()) {
-			case IrValue.BOOLEAN: {
+			case BOOLEAN: {
 				return ((IrBoolean)eval).getValue();
 			}
-			case IrValue.NUMBER: {
+			case NUMBER: {
 				throw new IrException(eval.getLocation(), "Cannot use a number as a boolean expression");
 			}
-			case IrValue.STRING: {
+			case STRING: {
 				throw new IrException(eval.getLocation(), "Cannot use a string as a boolean expression");
 			}
-			case IrValue.FUNC: {
+			case FUNC: {
 				throw new IrException(eval.getLocation(), "Cannot use a function as a boolean expression");
 			}
-			case IrValue.NULL: {
+			case NULL: {
 				return false;
 			}
 

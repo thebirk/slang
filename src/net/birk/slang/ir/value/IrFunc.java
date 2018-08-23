@@ -14,7 +14,7 @@ public abstract class IrFunc extends IrValue {
 	private int functionType;
 
 	public IrFunc(int functionType, SourceLoc location) {
-		super(IrValue.FUNC, location);
+		super(IrValue.Type.FUNC, location);
 		this.functionType = functionType;
 	}
 

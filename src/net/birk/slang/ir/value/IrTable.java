@@ -10,7 +10,7 @@ public class IrTable extends IrValue {
 	private HashMap<IrValue, IrValue> map;
 
 	public IrTable(HashMap<IrValue, IrValue> map, SourceLoc location) {
-		super(IrValue.TABLE, location);
+		super(IrValue.Type.TABLE, location);
 		this.map = map;
 	}
 

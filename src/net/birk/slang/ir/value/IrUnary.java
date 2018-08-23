@@ -9,7 +9,7 @@ public class IrUnary extends IrValue {
 	private IrValue expr;
 
 	public IrUnary(int op, IrValue expr, SourceLoc location) {
-		super(IrValue.UNARY, location);
+		super(IrValue.Type.UNARY, location);
 		this.op = op;
 		this.expr = expr;
 	}

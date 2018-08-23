@@ -6,7 +6,7 @@ import net.birk.slang.ir.IrScope;
 public class IrNull extends IrValue {
 
 	public IrNull(SourceLoc location) {
-		super(IrValue.NULL, location);
+		super(IrValue.Type.NULL, location);
 	}
 
 	@Override
@@ -21,7 +21,7 @@ public class IrNull extends IrValue {
 
 	@Override
 	public boolean isEqual(IrValue other) {
-		return other.getType() == IrValue.NULL;
+		return other.getType() == IrValue.Type.NULL;
 	}
 
 }

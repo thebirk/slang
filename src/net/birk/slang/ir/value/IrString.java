@@ -8,7 +8,7 @@ public class IrString extends IrValue {
 	private String value;
 
 	public IrString(String value, SourceLoc location) {
-		super(IrValue.STRING, location);
+		super(IrValue.Type.STRING, location);
 		this.value = value;
 	}
 
@@ -23,10 +23,10 @@ public class IrString extends IrValue {
 
 	@Override
 	public boolean isEqual(IrValue other) {
-		if(other.getType() == IrValue.IDENT) {
+		if(other.getType() == IrValue.Type.IDENT) {
 			IrIdent i = (IrIdent) other;
 			return i.getName().equals(value);
-		} else if(other.getType() == IrValue.STRING) {
+		} else if(other.getType() == IrValue.Type.STRING) {
 			IrString s = (IrString ) other;
 			return s.getValue().equals(value);
 		} else {

@@ -26,7 +26,7 @@ public class IrCallStmt extends IrStmt {
 			finalArgs.add(v.eval(scope));
 		}
 		func = func.eval(scope);
-		if(func.getType() != IrValue.FUNC) {
+		if(func.getType() != IrValue.Type.FUNC) {
 			throw new IrException(getLocation(), "Trying to call a non function value!");
 		}
 		((IrFunc)func).call(scope, finalArgs);

@@ -10,7 +10,7 @@ public class IrBinary extends IrValue {
 	private IrValue rhs;
 
 	public IrBinary(int op, IrValue lhs, IrValue rhs, SourceLoc location) {
-		super(IrValue.BINARY, location);
+		super(IrValue.Type.BINARY, location);
 		this.op = op;
 		this.lhs = lhs;
 		this.rhs = rhs;

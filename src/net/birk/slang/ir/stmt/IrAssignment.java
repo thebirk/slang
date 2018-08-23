@@ -21,17 +21,17 @@ public class IrAssignment extends IrStmt {
 
 	@Override
 	public IrStmtResult eval(IrScope scope) {
-		if(lhs.getType() != IrValue.IDENT && lhs.getType() != IrValue.INDEX) {
+		if(lhs.getType() != IrValue.Type.IDENT && lhs.getType() != IrValue.Type.INDEX) {
 			lhs = lhs.eval(scope);
 		}
-		if(lhs.getType() != IrValue.IDENT && lhs.getType() != IrValue.INDEX) {
+		if(lhs.getType() != IrValue.Type.IDENT && lhs.getType() != IrValue.Type.INDEX) {
 			throw new IrException(lhs.getLocation(), "Cannot assign to left hand of assignment!");
 			//throw new IrException(lhs.getLocation(), "Left hand side of assignment cannot be assigned to!");
 		}
 
 
 
-		if(lhs.getType() == IrValue.IDENT) {
+		if(lhs.getType() == IrValue.Type.IDENT) {
 			IrValue result = rhs.eval(scope);
 			switch (op) {
 				case '=': break;
@@ -51,14 +51,14 @@ public class IrAssignment extends IrStmt {
 			if (!scope.set(ident.getName(), result)) {
 				throw new IrException(lhs.getLocation(), "Symbol '" + ident.getName() + "' does not exist!");
 			}
-		} else if(lhs.getType() == IrValue.INDEX) {
+		} else if(lhs.getType() == IrValue.Type.INDEX) {
 			IrIndex irIndex = (IrIndex) lhs;
 			IrValue expr = irIndex.getExpr().eval(scope);
 
-			if(expr.getType() == IrValue.ARRAY) {
+			if(expr.getType() == IrValue.Type.ARRAY) {
 				IrArray array = (IrArray) expr;
 				IrValue index = irIndex.getIndex().eval(scope);
-				if(index.getType() != IrValue.NUMBER) {
+				if(index.getType() != IrValue.Type.NUMBER) {
 					throw new IrException(index.getLocation(), "Can only index arrays using numbers!");
 				}
 				IrNumber indexN = (IrNumber) index;
@@ -83,7 +83,7 @@ public class IrAssignment extends IrStmt {
 				//TODO: Warn on non-integer index?
 				array.getItems().set((int)((IrNumber) index).getValue(), result);
 			}
-			else if(expr.getType() == IrValue.TABLE) {
+			else if(expr.getType() == IrValue.Type.TABLE) {
 				// Good luck!
 				IrTable table = (IrTable) expr;
 				IrValue indexValue = irIndex.getIndex().eval(scope);

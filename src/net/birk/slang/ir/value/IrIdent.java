@@ -9,7 +9,7 @@ public class IrIdent extends IrValue {
 	private String name;
 
 	public IrIdent(String name, SourceLoc location) {
-		super(IrValue.IDENT, location);
+		super(IrValue.Type.IDENT, location);
 		this.name = name;
 	}
 
@@ -29,10 +29,10 @@ public class IrIdent extends IrValue {
 
 	@Override
 	public boolean isEqual(IrValue other) {
-		if(other.getType() == IrValue.IDENT) {
+		if(other.getType() == IrValue.Type.IDENT) {
 			IrIdent i = (IrIdent) other;
 			return i.getName().equals(name);
-		} else if(other.getType() == IrValue.STRING) {
+		} else if(other.getType() == IrValue.Type.STRING) {
 			IrString s = (IrString ) other;
 			return s.getValue().equals(name);
 		} else {

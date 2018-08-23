@@ -12,7 +12,7 @@ public class IrCallValue extends IrValue {
 	private ArrayList<IrValue> args;
 
 	public IrCallValue(IrValue func, ArrayList<IrValue> args, SourceLoc location) {
-		super(IrValue.CALL, location);
+		super(IrValue.Type.CALL, location);
 		this.func = func;
 		this.args = args;
 	}
@@ -24,7 +24,7 @@ public class IrCallValue extends IrValue {
 			finalArgs.add(v.eval(scope));
 		}
 		func = func.eval(scope);
-		if(func.getType() != IrValue.FUNC) {
+		if(func.getType() != IrValue.Type.FUNC) {
 			throw new IrException(getLocation(), "Trying to call a non function value!");
 		}
 		return ((IrFunc)func).call(scope, finalArgs);

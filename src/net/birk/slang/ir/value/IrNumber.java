@@ -8,7 +8,7 @@ public class IrNumber extends IrValue {
 	private double value;
 
 	public IrNumber(double value, SourceLoc location) {
-		super(IrValue.NUMBER, location);
+		super(IrValue.Type.NUMBER, location);
 		this.value = value;
 	}
 
@@ -23,7 +23,7 @@ public class IrNumber extends IrValue {
 
 	@Override
 	public boolean isEqual(IrValue other) {
-		if(other.getType() == IrValue.NUMBER) {
+		if(other.getType() == IrValue.Type.NUMBER) {
 			IrNumber n = (IrNumber) other;
 			return n.getValue() == value;
 		} else {
