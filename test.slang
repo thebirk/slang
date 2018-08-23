@@ -188,6 +188,11 @@ fn anonFuncTest() {
     //}(1, 2);
 }
 
+fn assertTest() {
+    assert(1 == 1);
+    //assert(1 == 2);
+}
+
 //fn printf(fmt, *args) {
 //    println(fmt, ..args); // A 'spread' operator would be nice
 //}
@@ -209,6 +214,7 @@ fn main() {
         arrayTest();
         tableTest();
         utf8Test();
+        assertTest();
 
         factorialTest();
         whileTest();

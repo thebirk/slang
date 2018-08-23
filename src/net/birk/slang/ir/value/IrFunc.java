@@ -34,4 +34,5 @@ public abstract class IrFunc extends IrValue {
 		//NOTE: Should IrFuncs be hashable?
 		throw new RuntimeException("Internal compiler error! IrFunc hash not implemented!");
 	}
+
 }

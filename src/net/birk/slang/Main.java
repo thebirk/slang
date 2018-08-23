@@ -17,18 +17,20 @@ public class Main {
 
 	/*
 	 * TODO:
+	 *  # Add userdata type (remember to implement the userdata tag)
 	 *  - Add for
 	 *  - IrJavaFunc:
-	 *   - Arguments that take the arg count
-	 *   - Flag to set varargs
+	 *   - Add minimum args and exact args, that way we can do assert(boolean, ...printstuff)
 	 *  - IrSlangFunc:
 	 *   - Varargs flags
 	 *    - only varargs if last param looks like this "*ident", turns into array
 	 *    - Pass all args as array
-	 *  - Add userdata type (remember to implement the userdata tag)
 	 *  - 'import' keyword
+	 *   - Have a function like __init__ that gets called when a file is imported
 	 *   - 'use' keyword for builtins? or just a simple switch on the import name?
-	 *  - Better "Expected operand" error.
+	 *  - Better "Expected operand" error. What is an operand?
+	 *  - Call stack, for better error printouts
+	 *  - Better location setting
 	 *
 	 * TODONE:
 	 *  + Add array type []
@@ -36,6 +38,9 @@ public class Main {
 	 *  + Add table type {}
 	 *  + Add while
 	 *  + Add anon func
+	 *  + IrJavaFunc:
+	 *   + Arguments that take the arg count
+	 *   + Flag to set varargs
 	 *
 	 * MAYBEDO:
 	 *   - A seperate Table like structure for importing other files(aka. a Module) biggest difference would be

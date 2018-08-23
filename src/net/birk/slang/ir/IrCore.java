@@ -83,9 +83,9 @@ public class IrCore {
 		// - First index of a value
 		// - All indices of a value
 
-		global.add("println", new IrJavaFunc(new SourceLoc("builtin-println", 1, 1)) {
+		global.add("println", new IrJavaFunc(-1, new SourceLoc("builtin-println", 1, 1)) {
 			@Override
-			public IrValue call(IrScope scope, ArrayList<IrValue> args) {
+			public IrValue javaCall(IrScope scope, ArrayList<IrValue> args) {
 				for(IrValue v : args) {
 					System.out.print(stringifyValue(v));
 				}
@@ -94,9 +94,9 @@ public class IrCore {
 			}
 		});
 
-		global.add("exit", new IrJavaFunc(new SourceLoc("builtin-exit", 1, 1)) {
+		global.add("exit", new IrJavaFunc(1, new SourceLoc("builtin-exit", 1, 1)) {
 			@Override
-			public IrValue call(IrScope scope, ArrayList<IrValue> args) {
+			public IrValue javaCall(IrScope scope, ArrayList<IrValue> args) {
 				if(args.get(0).getType() == IrValue.Type.NUMBER) {
 					IrNumber n = (IrNumber) args.get(0);
 					System.exit((int)n.getValue());
@@ -105,9 +105,9 @@ public class IrCore {
 			}
 		});
 
-		global.add("len", new IrJavaFunc(new SourceLoc("builtin-len", 1, 1)) {
+		global.add("len", new IrJavaFunc(1, new SourceLoc("builtin-len", 1, 1)) {
 			@Override
-			public IrValue call(IrScope scope, ArrayList<IrValue> args) {
+			public IrValue javaCall(IrScope scope, ArrayList<IrValue> args) {
 				//NOTE: Do we crash or just return null if we dont get what we want?
 				IrValue v = args.get(0);
 				if(v.getType() == IrValue.Type.ARRAY) {
@@ -127,6 +127,15 @@ public class IrCore {
 			}
 		});
 
+		global.add("assert", new IrJavaFunc(1, new SourceLoc("builtin-assert", 1, 1)) {
+			@Override
+			public IrValue javaCall(IrScope scope, ArrayList<IrValue> args) {
+				if(!IrValue.isTrue(args.get(0))) {
+					throw new IrException(getLocation(), "Assertion failed!");
+				}
+				return new IrBoolean(true, null);
+			}
+		});
 		//TODO: Add assert
 	}
 

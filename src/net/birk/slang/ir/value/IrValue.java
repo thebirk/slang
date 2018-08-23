@@ -25,6 +25,7 @@ public abstract class IrValue {
 		INDEX,
 		TABLE,
 		TABLE_LITERAL,
+		USERDATA,
 	}
 
 	private Type type;
