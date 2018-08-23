@@ -65,7 +65,7 @@ public class Main {
 
 	public static IrValue parseAndRunFile(String path) throws IOException {
 		Timer.startSection("Lexer");
-		Lexer lexer = new Lexer("test.slang");
+		Lexer lexer = new Lexer(path);
 		lexer.lex();
 
 		Timer.startSection("Parser");

@@ -92,6 +92,18 @@ public class IrCore {
 		// - Check if contains value
 		// - First index of a value
 		// - All indices of a value
+		global.add("int", new IrJavaFunc(1, new SourceLoc("builtin-int", 1, 1)) {
+			@Override
+			public IrValue javaCall(IrScope scope, ArrayList<IrValue> args) {
+				IrValue v = args.get(0);
+				if(v.getType() == Type.NUMBER) {
+					IrNumber n = (IrNumber) v;
+					return new IrNumber((long)n.getValue(), null);
+				} else {
+					return new IrNull(null);
+				}
+			}
+		});
 
 		global.add("println", new IrJavaFunc(-1, new SourceLoc("builtin-println", 1, 1)) {
 			@Override

@@ -240,6 +240,10 @@ fn generateBigTest(n) {
     }
 }
 
+fn intTest() {
+    println("int(1.5) = ", int(1.5));
+}
+
 fn main() {
     if true {
         genericTest();
@@ -262,6 +266,7 @@ fn main() {
         typeTest();
         whileTest();
         anonFuncTest();
+        intTest();
 
         //generateBigTest(10000);
     }
