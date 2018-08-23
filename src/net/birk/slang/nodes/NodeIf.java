@@ -9,7 +9,7 @@ public class NodeIf extends Node {
 	private Node _else;
 
 	public NodeIf(Node expr, NodeBlock block, Node _else, SourceLoc location) {
-		super(Node.IF, location);
+		super(Node.Type.IF, location);
 		this.expr = expr;
 		this.block = block;
 		this._else = _else;

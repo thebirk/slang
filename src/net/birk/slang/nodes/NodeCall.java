@@ -10,7 +10,7 @@ public class NodeCall extends Node {
 	private ArrayList<Node> args;
 
 	public NodeCall(Node expr, ArrayList<Node> args, SourceLoc location) {
-		super(Node.CALL, location);
+		super(Node.Type.CALL, location);
 		this.expr = expr;
 		this.args = args;
 	}

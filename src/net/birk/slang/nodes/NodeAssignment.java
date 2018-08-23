@@ -9,7 +9,7 @@ public class NodeAssignment extends Node {
 	private Node rhs;
 
 	public NodeAssignment(int op, Node lhs, Node rhs, SourceLoc location) {
-		super(Node.ASSIGNMENT, location);
+		super(Node.Type.ASSIGNMENT, location);
 		this.op = op;
 		this.lhs = lhs;
 		this.rhs = rhs;

@@ -10,7 +10,7 @@ public class NodeBinary extends Node {
 	private Node rhs;
 
 	public NodeBinary(int op, Node lhs, Node rhs, SourceLoc location) {
-		super(Node.BINARY, location);
+		super(Node.Type.BINARY, location);
 		this.op = op;
 		this.lhs = lhs;
 		this.rhs = rhs;

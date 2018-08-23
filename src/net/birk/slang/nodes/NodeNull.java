@@ -5,7 +5,7 @@ import net.birk.slang.SourceLoc;
 public class NodeNull extends Node {
 
 	public NodeNull(SourceLoc location) {
-		super(Node.NULL, location);
+		super(Node.Type.NULL, location);
 	}
 
 }

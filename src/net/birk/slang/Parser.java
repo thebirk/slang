@@ -377,7 +377,7 @@ public class Parser {
 				Node rhs = parseExpr();
 				return new NodeAssignment(op.getType(), expr, rhs, op.getSourceLoc());
 			}
-			else if(expr.getType() == Node.CALL) {
+			else if(expr.getType() == Node.Type.CALL) {
 				return expr;
 			}
 			else {
@@ -397,7 +397,7 @@ public class Parser {
 				stmts.add(stmt);
 
 				//NOTE: Hacky!
-				if(stmt.getType() != Node.FUNC && stmt.getType() != Node.IF && stmt.getType() != Node.BLOCK && stmt.getType() != Node.WHILE) {
+				if(stmt.getType() != Node.Type.FUNC && stmt.getType() != Node.Type.IF && stmt.getType() != Node.Type.BLOCK && stmt.getType() != Node.Type.WHILE) {
 					if (!matchToken(';')) {
 						System.err.println(currentToken.getSourceLoc() + ": Syntax error! Expected ';' after statement, got '" + currentToken.getTypeString() + "'.");
 						System.exit(1);
@@ -419,7 +419,7 @@ public class Parser {
 					stmts.add(stmt);
 
 					//NOTE: Hacky!
-					if(stmt.getType() != Node.FUNC && stmt.getType() != Node.IF && stmt.getType() != Node.BLOCK && stmt.getType() != Node.WHILE) {
+					if(stmt.getType() != Node.Type.FUNC && stmt.getType() != Node.Type.IF && stmt.getType() != Node.Type.BLOCK && stmt.getType() != Node.Type.WHILE) {
 						if (!matchToken(';')) {
 							System.err.println(currentToken.getSourceLoc() + ": Syntax error! Expected ';' after statement, got '" + currentToken.getTypeString() + "'.");
 							System.exit(1);
@@ -489,7 +489,7 @@ public class Parser {
 			Node stmt = parseStmt();
 			nodes.add(stmt);
 
-			if(stmt.getType() == Node.VAR) {
+			if(stmt.getType() == Node.Type.VAR) {
 				if(!matchToken(';')) {
 					System.err.println(currentToken.getSourceLoc() + ": Syntax error! Expected ';' after statement, got '" + currentToken.getTypeString() + "'.");
 					System.exit(1);

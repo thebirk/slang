@@ -38,7 +38,7 @@ public class NodeTableLiteral extends Node {
 	private ArrayList<Entry> entries;
 
 	public NodeTableLiteral(ArrayList<Entry> entries, SourceLoc location) {
-		super(Node.TABLE_LITERAL, location);
+		super(Node.Type.TABLE_LITERAL, location);
 		this.entries = entries;
 	}
 

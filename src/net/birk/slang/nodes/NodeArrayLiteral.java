@@ -9,7 +9,7 @@ public class NodeArrayLiteral extends Node {
 	private ArrayList<Node> items;
 
 	public NodeArrayLiteral(ArrayList<Node> items, SourceLoc location) {
-		super(Node.ARRAY_LITERAL, location);
+		super(Node.Type.ARRAY_LITERAL, location);
 		this.items = items;
 	}
 

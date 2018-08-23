@@ -7,7 +7,7 @@ public class NodeIdent extends Node {
 	private String name;
 
 	public NodeIdent(String name, SourceLoc location) {
-		super(Node.IDENT, location);
+		super(Node.Type.IDENT, location);
 		this.name = name;
 	}
 

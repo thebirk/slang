@@ -6,7 +6,7 @@ import net.birk.slang.Token;
 public class NodeFalse extends Node {
 
 	public NodeFalse(SourceLoc location) {
-		super(Node.FALSE, location);
+		super(Node.Type.FALSE, location);
 	}
 
 }

@@ -10,7 +10,7 @@ public class NodeAnonFunc extends Node {
 	private NodeBlock block;
 
 	public NodeAnonFunc(ArrayList<String> args, NodeBlock block, SourceLoc location) {
-		super(Node.ANON_FUNC, location);
+		super(Node.Type.ANON_FUNC, location);
 		this.args = args;
 		this.block = block;
 	}

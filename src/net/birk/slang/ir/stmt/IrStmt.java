@@ -15,14 +15,6 @@ public abstract class IrStmt {
 		WHILE
 	}
 
-	/*public static final int ASSIGNMENT = 0;
-	public static final int VAR = 1;
-	public static final int RETURN = 2;
-	public static final int CALL = 3;
-	public static final int BLOCK = 4;
-	public static final int IF = 5;
-	public static final int WHILE = 6;*/
-
 	private Type type;
 	private SourceLoc location;
 

@@ -7,7 +7,7 @@ public class NodeReturn extends Node {
 	private Node expr;
 
 	public NodeReturn(Node expr, SourceLoc location) {
-		super(Node.RETURN, location);
+		super(Node.Type.RETURN, location);
 		this.expr = expr;
 	}
 

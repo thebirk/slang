@@ -8,7 +8,7 @@ public class NodeField extends Node {
 	public NodeIdent ident;
 
 	public NodeField(Node expr, NodeIdent ident, SourceLoc location) {
-		super(Node.FIELD, location);
+		super(Node.Type.FIELD, location);
 		this.expr = expr;
 		this.ident = ident;
 	}

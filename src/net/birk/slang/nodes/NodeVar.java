@@ -8,7 +8,7 @@ public class NodeVar extends Node {
 	private Node expr;
 
 	public NodeVar(String name, Node expr, SourceLoc location) {
-		super(Node.VAR, location);
+		super(Node.Type.VAR, location);
 		this.name = name;
 		this.expr = expr;
 	}

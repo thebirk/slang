@@ -7,7 +7,7 @@ public class NodeString extends Node {
 	private String value;
 
 	public NodeString(String value, SourceLoc location) {
-		super(Node.STRING, location);
+		super(Node.Type.STRING, location);
 		this.value = value;
 	}
 

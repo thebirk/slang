@@ -9,7 +9,7 @@ public class NodeBlock extends  Node {
 	private ArrayList<Node> stmts;
 
 	public NodeBlock(ArrayList<Node> stmts, SourceLoc location) {
-		super(Node.BLOCK, location);
+		super(Node.Type.BLOCK, location);
 		this.stmts = stmts;
 	}
 

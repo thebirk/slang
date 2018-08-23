@@ -7,7 +7,7 @@ public class NodeNumber extends Node {
 	private double value;
 
 	public NodeNumber(double value, SourceLoc location) {
-		super(Node.NUMBER, location);
+		super(Node.Type.NUMBER, location);
 		this.value = value;
 	}
 

@@ -28,20 +28,6 @@ public abstract class IrValue {
 		TABLE_LITERAL,
 	}
 
-	/*public static final int NULL = 0;
-	public static final int STRING = 1;
-	public static final int NUMBER = 2;
-	public static final int FUNC = 3;
-	public static final int BINARY = 4;
-	public static final int IDENT = 5;
-	public static final int UNARY = 6;
-	public static final int BOOLEAN = 7;
-	public static final int CALL = 8;
-	public static final int ARRAY = 9;
-	public static final int INDEX = 10;
-	public static final int TABLE = 11;
-	public static final int TABLE_LITERAL = 12;*/
-
 	private Type type;
 	private SourceLoc location;
 
@@ -257,7 +243,7 @@ public abstract class IrValue {
 
 	public static IrStmt generateStmt(Node n) {
 		switch (n.getType()) {
-			case Node.RETURN: {
+			case RETURN: {
 				NodeReturn nreturn = (NodeReturn) n;
 
 				if(nreturn.getExpr() != null) {
@@ -266,16 +252,16 @@ public abstract class IrValue {
 					return new IrReturn(null, n.getLocation());
 				}
 			}
-			case Node.BLOCK: {
+			case BLOCK: {
 				NodeBlock block = (NodeBlock) n;
 				return generateBlock(block);
 			}
-			case Node.VAR: {
+			case VAR: {
 				NodeVar nvar = (NodeVar) n;
 				IrVar irVar = new IrVar(nvar.getName(), generateExpr(nvar.getExpr()), nvar.getLocation());
 				return irVar;
 			}
-			case Node.CALL: {
+			case CALL: {
 				NodeCall ncall = (NodeCall) n;
 				ArrayList<IrValue> args = new ArrayList<IrValue>();
 				for(Node argn : ncall.getArgs()) {
@@ -284,12 +270,12 @@ public abstract class IrValue {
 				IrCallStmt irCallStmt = new IrCallStmt(generateExpr(ncall.getExpr()), args, ncall.getLocation());
 				return irCallStmt;
 			}
-			case Node.ASSIGNMENT: {
+			case ASSIGNMENT: {
 				NodeAssignment na = (NodeAssignment) n;
 				IrAssignment irAssignment = new IrAssignment(na.getOp(), generateExpr(na.getLhs()), generateExpr(na.getRhs()), na.getLocation());
 				return irAssignment;
 			}
-			case Node.IF: {
+			case IF: {
 				NodeIf nif = (NodeIf) n;
 				if(nif.getElse() == null) {
 					return new IrIf(generateExpr(nif.getExpr()), generateBlock(nif.getBlock()), null, nif.getLocation());
@@ -297,13 +283,13 @@ public abstract class IrValue {
 					return new IrIf(generateExpr(nif.getExpr()), generateBlock(nif.getBlock()), generateStmt(nif.getElse()), nif.getLocation());
 				}
 			}
-			case Node.FUNC: {
+			case FUNC: {
 				NodeFunc nfunc = (NodeFunc) n;
 				IrFunc irFunc = new IrSlangFunc(generateBlock(nfunc.getBlock()), nfunc.getArgs(), nfunc.getLocation());
 				IrVar irVar = new IrVar(nfunc.getIdent().getName(), irFunc, nfunc.getLocation());
 				return irVar;
 			}
-			case Node.WHILE: {
+			case WHILE: {
 				NodeWhile nw = (NodeWhile) n;
 				return new IrWhile(generateExpr(nw.getCond()), generateBlock(nw.getBlock()), n.getLocation());
 			}
@@ -324,42 +310,42 @@ public abstract class IrValue {
 
 	public static IrValue generateExpr(Node expr) {
 		switch (expr.getType()) {
-			case Node.NULL: {
+			case NULL: {
 				return new IrNull(expr.getLocation());
 			}
-			case Node.STRING: {
+			case STRING: {
 				NodeString str = (NodeString) expr;
 				return new IrString(str.getValue(), str.getLocation());
 			}
-			case Node.NUMBER: {
+			case NUMBER: {
 				NodeNumber num = (NodeNumber) expr;
 				return new IrNumber(num.getValue(), num.getLocation());
 			}
-			case Node.IDENT: {
+			case IDENT: {
 				NodeIdent ident = (NodeIdent) expr;
 				return new IrIdent(ident.getName(), ident.getLocation());
 			}
-			case Node.BINARY: {
+			case BINARY: {
 				NodeBinary b = (NodeBinary) expr;
 				return new IrBinary(b.getOp(), generateExpr(b.getLhs()), generateExpr(b.getRhs()), b.getLocation());
 			}
-			case Node.TRUE: {
+			case TRUE: {
 				return new IrBoolean(true, expr.getLocation());
 			}
-			case Node.FALSE: {
+			case FALSE: {
 				return new IrBoolean(false, expr.getLocation());
 			}
-			case Node.FUNC: {
+			case FUNC: {
 				NodeFunc func = (NodeFunc) expr;
 				IrBlock block = generateBlock(func.getBlock());
 				IrFunc irFunc = new IrSlangFunc(block, func.getArgs(), func.getLocation());
 				return irFunc;
 			}
-			case Node.UNARY: {
+			case UNARY: {
 				NodeUnary un = (NodeUnary) expr;
 				return new IrUnary(un.getOp(), generateExpr(un.getExpr()), un.getLocation());
 			}
-			case Node.CALL: {
+			case CALL: {
 				NodeCall ncall = (NodeCall) expr;
 				ArrayList<IrValue> args = new ArrayList<IrValue>();
 				for(Node n : ncall.getArgs()) {
@@ -367,7 +353,7 @@ public abstract class IrValue {
 				}
 				return new IrCallValue(generateExpr(ncall.getExpr()), args, ncall.getLocation());
 			}
-			case Node.ARRAY_LITERAL: {
+			case ARRAY_LITERAL: {
 				NodeArrayLiteral narr = (NodeArrayLiteral) expr;
 				ArrayList<IrValue> items = new ArrayList<IrValue>();
 				for(Node n : narr.getItems()) {
@@ -375,15 +361,15 @@ public abstract class IrValue {
 				}
 				return new IrArray(items, narr.getLocation());
 			}
-			case Node.INDEX: {
+			case INDEX: {
 				NodeIndex ni = (NodeIndex) expr;
 				return new IrIndex(generateExpr(ni.getExpr()), generateExpr(ni.getIndex()), expr.getLocation());
 			}
-			case Node.TABLE_LITERAL: {
+			case TABLE_LITERAL: {
 				NodeTableLiteral nt = (NodeTableLiteral) expr;
 				return new IrTableLiteral(nt.getEntries(), nt.getLocation());
 			}
-			case Node.ANON_FUNC: {
+			case ANON_FUNC: {
 				NodeAnonFunc f = (NodeAnonFunc) expr;
 				return new IrSlangFunc(generateBlock(f.getBlock()), f.getArgs(), f.getLocation());
 			}

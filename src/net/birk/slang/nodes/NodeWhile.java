@@ -8,7 +8,7 @@ public class NodeWhile extends Node {
 	private NodeBlock block;
 
 	public NodeWhile(Node cond, NodeBlock block, SourceLoc location) {
-		super(Node.WHILE, location);
+		super(Node.Type.WHILE, location);
 		this.cond = cond;
 		this.block = block;
 	}

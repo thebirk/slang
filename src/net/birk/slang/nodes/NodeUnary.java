@@ -8,7 +8,7 @@ public class NodeUnary extends Node {
 	private Node expr;
 
 	public NodeUnary(int op, Node expr, SourceLoc location) {
-		super(Node.UNARY, location);
+		super(Node.Type.UNARY, location);
 		this.op = op;
 		this.expr = expr;
 	}

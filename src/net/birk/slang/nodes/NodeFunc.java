@@ -11,7 +11,7 @@ public class NodeFunc extends Node {
 	private NodeBlock block;
 
 	public NodeFunc(NodeIdent ident, ArrayList<String> args, NodeBlock block, SourceLoc location) {
-		super(Node.FUNC, location);
+		super(Node.Type.FUNC, location);
 		this.ident = ident;
 		this.args = args;
 		this.block = block;

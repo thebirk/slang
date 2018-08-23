@@ -69,13 +69,13 @@ public class Main {
 			IrScope fileScope = new IrScope(global);
 			for(Node n : nodes) {
 				switch (n.getType()) {
-					case Node.VAR: {
+					case VAR: {
 						NodeVar var = (NodeVar) n;
 						if(!fileScope.add(var.getName(), IrValue.generateExpr(var.getExpr()))) {
 							throw new IrException(var.getLocation(), "Symbol '" + var.getName() + "' already exists!");
 						}
 					} break;
-					case Node.FUNC: {
+					case FUNC: {
 						NodeFunc f = (NodeFunc) n;
 						if(!fileScope.add(f.getIdent().getName(), IrValue.generateExpr(n))) {
 							throw new IrException(f.getLocation(), "Symbol '" + f.getIdent().getName() + "' already exists!");

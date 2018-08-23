@@ -8,7 +8,7 @@ public class NodeIndex extends Node {
 	private Node index;
 
 	public NodeIndex(Node expr, Node index, SourceLoc location) {
-		super(Node.INDEX, location);
+		super(Node.Type.INDEX, location);
 		this.expr = expr;
 		this.index = index;
 	}
