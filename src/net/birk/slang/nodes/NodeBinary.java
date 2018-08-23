@@ -1,7 +1,6 @@
 package net.birk.slang.nodes;
 
 import net.birk.slang.SourceLoc;
-import net.birk.slang.Token;
 
 public class NodeBinary extends Node {
 
@@ -27,4 +26,5 @@ public class NodeBinary extends Node {
 	public Node getRhs() {
 		return rhs;
 	}
+
 }

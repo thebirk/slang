@@ -3,7 +3,6 @@ package net.birk.slang.ir.value;
 import net.birk.slang.SourceLoc;
 import net.birk.slang.ir.IrScope;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class IrArray extends IrValue {

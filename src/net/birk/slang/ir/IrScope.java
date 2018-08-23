@@ -1,7 +1,6 @@
 package net.birk.slang.ir;
 
 import net.birk.slang.ir.value.IrFunc;
-import net.birk.slang.ir.value.IrNull;
 import net.birk.slang.ir.value.IrValue;
 
 import java.util.ArrayList;

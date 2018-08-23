@@ -8,7 +8,6 @@ import net.birk.slang.ir.stmt.*;
 import net.birk.slang.nodes.*;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 public abstract class IrValue {
 

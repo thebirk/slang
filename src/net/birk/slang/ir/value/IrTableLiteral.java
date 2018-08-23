@@ -2,7 +2,6 @@ package net.birk.slang.ir.value;
 
 import net.birk.slang.SourceLoc;
 import net.birk.slang.ir.IrScope;
-import net.birk.slang.nodes.NodeArrayLiteral;
 import net.birk.slang.nodes.NodeTableLiteral;
 
 import java.util.ArrayList;
