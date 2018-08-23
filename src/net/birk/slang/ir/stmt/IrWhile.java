@@ -10,7 +10,7 @@ public class IrWhile extends IrStmt {
 	private IrBlock block;
 
 	public IrWhile(IrValue cond, IrBlock block, SourceLoc location) {
-		super(IrStmt.WHILE, location);
+		super(IrStmt.Type.WHILE, location);
 		this.cond = cond;
 		this.block = block;
 	}

@@ -11,7 +11,7 @@ public class IrIf extends IrStmt {
 	private IrStmt _else;
 
 	public IrIf(IrValue cond, IrBlock block, IrStmt _else, SourceLoc location) {
-		super(IrStmt.IF, location);
+		super(IrStmt.Type.IF, location);
 		this.cond = cond;
 		this.block = block;
 		this._else = _else;

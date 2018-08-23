@@ -13,7 +13,7 @@ public class IrAssignment extends IrStmt {
 	private IrValue rhs;
 
 	public IrAssignment(int op, IrValue lhs, IrValue rhs, SourceLoc location) {
-		super(IrStmt.ASSIGNMENT, location);
+		super(IrStmt.Type.ASSIGNMENT, location);
 		this.op = op;
 		this.lhs = lhs;
 		this.rhs = rhs;

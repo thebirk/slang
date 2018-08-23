@@ -9,7 +9,7 @@ public class IrReturn extends IrStmt {
 	private IrValue value;
 
 	public IrReturn(IrValue value, SourceLoc location) {
-		super(IrStmt.RETURN, location);
+		super(IrStmt.Type.RETURN, location);
 		this.value = value;
 	}
 

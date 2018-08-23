@@ -10,7 +10,7 @@ public class IrBlock extends IrStmt {
 	private ArrayList<IrStmt> stmts;
 
 	public IrBlock(ArrayList<IrStmt> stmts, SourceLoc location) {
-		super(IrStmt.BLOCK, location);
+		super(IrStmt.Type.BLOCK, location);
 		this.stmts = stmts;
 	}
 

@@ -5,25 +5,35 @@ import net.birk.slang.ir.IrScope;
 
 public abstract class IrStmt {
 
-	public static final int ASSIGNMENT = 0;
+	public enum Type {
+		ASSIGNMENT,
+		VAR,
+		RETURN,
+		CALL,
+		BLOCK,
+		IF,
+		WHILE
+	}
+
+	/*public static final int ASSIGNMENT = 0;
 	public static final int VAR = 1;
 	public static final int RETURN = 2;
 	public static final int CALL = 3;
 	public static final int BLOCK = 4;
 	public static final int IF = 5;
-	public static final int WHILE = 6;
+	public static final int WHILE = 6;*/
 
-	private int type;
+	private Type type;
 	private SourceLoc location;
 
-	public IrStmt(int type, SourceLoc location) {
+	public IrStmt(Type type, SourceLoc location) {
 		this.type = type;
 		this.location = location;
 	}
 
 	public abstract IrStmtResult eval(IrScope scope);
 
-	public int getType() {
+	public Type getType() {
 		return type;
 	}
 

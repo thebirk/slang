@@ -11,7 +11,7 @@ public class IrVar extends IrStmt {
 	private IrValue value;
 
 	public IrVar(String name, IrValue value, SourceLoc location) {
-		super(IrStmt.VAR, location);
+		super(IrStmt.Type.VAR, location);
 		this.name = name;
 		this.value = value;
 	}

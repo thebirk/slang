@@ -14,7 +14,7 @@ public class IrCallStmt extends IrStmt {
 	private ArrayList<IrValue> args;
 
 	public IrCallStmt(IrValue func, ArrayList<IrValue> args, SourceLoc location) {
-		super(IrStmt.CALL, location);
+		super(IrStmt.Type.CALL, location);
 		this.func = func;
 		this.args = args;
 	}
