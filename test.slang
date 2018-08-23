@@ -167,9 +167,10 @@ fn whileTest() {
     println("Yay done!");
 }
 
-//fn printf(fmt, *args) {
-//    println(fmt, ..args); // A 'spread' operator would be nice
-//}
+fn utf8Test() {
+    var 汉 = 123;
+    println("汉 = ",  汉);
+}
 
 fn anonFuncTest() {
     var myprint = fn(a) {
@@ -177,16 +178,19 @@ fn anonFuncTest() {
     };
     myprint("Anon print works");
 
-    // We could get this to work if we really wanted, but its not really needed. Like this entire language...
+
+    var test = fn(msg) { return "Amazeballs " + msg; }("are awesome!");
+    println(test);
+
+    // We could get this to work if we really wanted, but its not really needed. Like this entire language... :(
     //fn(a, b) {
     //    println("a + b = ", a + b);
     //}(1, 2);
 }
 
-fn utf8Test() {
-    var 汉 = 123;
-    println("汉 = ",  汉);
-}
+//fn printf(fmt, *args) {
+//    println(fmt, ..args); // A 'spread' operator would be nice
+//}
 
 fn main() {
     if true {

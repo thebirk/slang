@@ -27,12 +27,14 @@ public class Main {
 	 *  - Add userdata type (remember to implement the userdata tag)
 	 *  - 'import' keyword
 	 *   - 'use' keyword for builtins? or just a simple switch on the import name?
+	 *  - Better "Expected operand" error.
 	 *
 	 * TODONE:
 	 *  + Add array type []
 	 *  + Add len() function
 	 *  + Add table type {}
 	 *  + Add while
+	 *  + Add anon func
 	 *
 	 * MAYBEDO:
 	 *   - A seperate Table like structure for importing other files(aka. a Module) biggest difference would be
@@ -80,6 +82,7 @@ public class Main {
 						}
 					} break;
 					default: {
+						//TODO: Better error: Cant have 'n' at the file scope
 						System.err.println("compiler error!");
 						assert false;
 						throw new RuntimeException("compiler error!");

@@ -35,4 +35,5 @@ public class IrBoolean extends IrValue {
 	public int hash() {
 		return Boolean.hashCode(value);
 	}
+
 }
