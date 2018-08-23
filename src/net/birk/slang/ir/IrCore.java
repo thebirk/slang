@@ -15,6 +15,10 @@ public class IrCore {
 				IrString str = (IrString) v;
 				return str.getValue();
 			}
+			case IDENT: {
+				IrIdent ident = (IrIdent) v;
+				return ident.getName();
+			}
 			case NUMBER: {
 				IrNumber n = (IrNumber) v;
 				return "" + n.getValue();

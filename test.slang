@@ -199,7 +199,7 @@ fn anonFuncTest() {
 //            i += 1;
 //        }
 //        exit(1);
-//        //trap(); Or something that will hard crash with a stack print and error location
+//        //panic(); Or something that will hard crash with a stack print and error location.
 //    }
 //}
 
@@ -230,7 +230,7 @@ fn assertTest() {
 //}
 
 fn main() {
-    if false {
+    if true {
         genericTest();
         concatTest();
         functionRenameTest();
@@ -241,19 +241,19 @@ fn main() {
         compTest();
         eqTest();
         lenTest();
+        factorialTest();
         //bigLoopTest();
         mathTest();
         arrayTest();
         tableTest();
         utf8Test();
         assertTest();
-
-        factorialTest();
+        typeTest();
         whileTest();
         anonFuncTest();
+
     }
 
-    typeTest();
 
     return 123;
 }

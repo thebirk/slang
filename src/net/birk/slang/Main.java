@@ -31,6 +31,7 @@ public class Main {
 	 *  - Better "Expected operand" error. What is an operand?
 	 *  - Call stack, for better error printouts
 	 *  - Better location setting
+	 *  - Better "Cannot compare lhs and rhs with operator" error. List the types perhaps? And pretty print the operators.
 	 *
 	 * TODONE:
 	 *  + Add array type []
