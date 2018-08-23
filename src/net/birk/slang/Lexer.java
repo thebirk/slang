@@ -27,6 +27,7 @@ public class Lexer {
 
 	private Token readToken() throws IOException {
 		int c = fr.read();
+		if(c == -1) return null;
 
 		if(c == ' ' || c == '\t' || c == '\r') {
 			offset++;
@@ -165,7 +166,10 @@ public class Lexer {
 
 	public void lex() throws IOException {
 		while(fr.ready()) {
-			tokens.add(readToken());
+			Token t = readToken();
+			if(t != null) {
+				tokens.add(t);
+			}
 		}
 		tokens.add(new Token(Token.EOF, "EOF", new SourceLoc(path, line, offset)));
 		fr.close();

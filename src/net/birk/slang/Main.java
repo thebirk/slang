@@ -9,7 +9,10 @@ import net.birk.slang.nodes.Node;
 import net.birk.slang.nodes.NodeFunc;
 import net.birk.slang.nodes.NodeVar;
 
+import java.io.FileDescriptor;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.Map;
 
@@ -60,62 +63,56 @@ public class Main {
 	 *
 	 */
 
-	public static void main(String[] args) {
-		Lexer lexer = null;
-		try {
-			Timer.startSection("Lexer");
-			lexer = new Lexer("test.slang");
-			lexer.lex();
+	public static IrValue parseAndRunFile(String path) throws IOException {
+		Timer.startSection("Lexer");
+		Lexer lexer = new Lexer("test.slang");
+		lexer.lex();
 
-			Timer.startSection("Parser");
-			Parser parser = new Parser(lexer.tokens);
-			ArrayList<Node> nodes = parser.parse();
+		Timer.startSection("Parser");
+		Parser parser = new Parser(lexer.tokens);
+		ArrayList<Node> nodes = parser.parse();
 
-			Timer.startSection("Ir Gen");
-			IrScope global = new IrScope(null);
-			IrScope fileScope = new IrScope(global);
-			for(Node n : nodes) {
-				switch (n.getType()) {
-					case VAR: {
-						NodeVar var = (NodeVar) n;
-						if(!fileScope.add(var.getName(), IrValue.generateExpr(var.getExpr()))) {
-							throw new IrException(var.getLocation(), "Symbol '" + var.getName() + "' already exists!");
-						}
-					} break;
-					case FUNC: {
-						NodeFunc f = (NodeFunc) n;
-						if(!fileScope.add(f.getIdent().getName(), IrValue.generateExpr(n))) {
-							throw new IrException(f.getLocation(), "Symbol '" + f.getIdent().getName() + "' already exists!");
-						}
-					} break;
-					default: {
-						//TODO: Better error: Cant have 'n' at the file scope
-						System.err.println("compiler error!");
-						assert false;
-						throw new RuntimeException("compiler error!");
+		Timer.startSection("Ir Gen");
+		IrScope global = new IrScope(null);
+		IrScope fileScope = new IrScope(global);
+		for(Node n : nodes) {
+			switch (n.getType()) {
+				case VAR: {
+					NodeVar var = (NodeVar) n;
+					if(!fileScope.add(var.getName(), IrValue.generateExpr(var.getExpr()))) {
+						throw new IrException(var.getLocation(), "Symbol '" + var.getName() + "' already exists!");
 					}
+				} break;
+				case FUNC: {
+					NodeFunc f = (NodeFunc) n;
+					if(!fileScope.add(f.getIdent().getName(), IrValue.generateExpr(n))) {
+						throw new IrException(f.getLocation(), "Symbol '" + f.getIdent().getName() + "' already exists!");
+					}
+				} break;
+				default: {
+					//TODO: Better error: Cant have 'n' at the file scope
+					System.err.println("compiler error!");
+					assert false;
+					throw new RuntimeException("compiler error!");
 				}
 			}
+		}
 
-			IrCore.addFunctions(global);
+		IrCore.addFunctions(global);
 
-			Timer.startSection("Ir Run");
-			// Eval all top level expression once we have them all added
-			for(Map.Entry<String, IrValue> kv : fileScope.getSymbols().entrySet()) {
-				IrValue v = kv.getValue();
-				fileScope.set(kv.getKey(), v.eval(fileScope));
-			}
+		// Eval all top level expression once we have them all added
+		for(Map.Entry<String, IrValue> kv : fileScope.getSymbols().entrySet()) {
+			IrValue v = kv.getValue();
+			fileScope.set(kv.getKey(), v.eval(fileScope));
+		}
 
-			// Call main if it exists
+		Timer.startSection("Ir Run");
+		// Call main if it exists
+		ArrayList<IrValue> mainArgs = new ArrayList<IrValue>();
+		IrValue returnValue = fileScope.callFunction("main", mainArgs);
 
-			ArrayList<IrValue> mainArgs = new ArrayList<IrValue>();
-			IrValue returnValue = fileScope.callFunction("main", mainArgs);
-			int returnCode = 0;
-			if(returnValue.getType() == IrValue.Type.NUMBER) {
-				IrNumber n = (IrNumber) returnValue;
-				returnCode = (int) n.getValue();
-			}
-			/*
+
+		/*
 			IrValue main = fileScope.get("main");
 			if(main == null) {
 				throw new IrException(null, "Could not find the main function!");
@@ -127,8 +124,66 @@ public class Main {
 				returnCode = (int) n.getValue();
 			}*/
 
-			System.out.println("\n============================");
-			Timer.printTimings();
+		return returnValue;
+	}
+
+	public static void main(String[] args) {
+		boolean printTimings = false;
+		boolean redirectOutput = false;
+		String outputPath = "";
+
+		boolean foundFile = false;
+		String filePath = "";
+		for(int i = 0; i < args.length; i++){
+			String a = args[i];
+
+			if(a.startsWith("-")) {
+				if(a.startsWith("-timings")) {
+					printTimings = true;
+				}
+				else if(a.startsWith("-output=")) {
+					redirectOutput = true;
+					outputPath = a.substring("-output=".length());
+
+					if(outputPath.isEmpty()) {
+						System.err.println("'-output=' requires an argument.");
+						return;
+					}
+				} else {
+					System.err.println("Unknown arguement: '" + a + "'");
+					return;
+				}
+			} else {
+				if(foundFile) {
+					System.err.println("Filepath already specified: '" + filePath + "'!");
+					return;
+				} else {
+					foundFile = true;
+					filePath = a;
+				}
+			}
+		}
+		if(!foundFile) {
+			System.err.println("No file was specified!");
+			return;
+		}
+
+		try {
+			if(redirectOutput) {
+				System.setOut(new PrintStream(new FileOutputStream(outputPath)));
+			}
+			IrValue returnValue = parseAndRunFile(filePath);
+			int returnCode = 0;
+			if(returnValue.getType() == IrValue.Type.NUMBER) {
+				IrNumber n = (IrNumber) returnValue;
+				returnCode = (int) n.getValue();
+			}
+
+			System.setOut(new PrintStream(new FileOutputStream(FileDescriptor.out)));
+			if(printTimings) {
+				System.out.println("\n============================");
+				Timer.printTimings();
+			}
 
 			System.exit(returnCode);
 		} catch (IOException e) {

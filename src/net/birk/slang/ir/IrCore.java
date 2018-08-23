@@ -8,7 +8,7 @@ import java.util.Map;
 
 public class IrCore {
 
-	private static String stringifyValue(IrValue v) {
+	public static String stringifyValue(IrValue v) {
 		if(v == null) throw new IrException(null, "Internal compiler error! We should never get null here!");
 		switch (v.getType()) {
 			case STRING: {
@@ -21,7 +21,13 @@ public class IrCore {
 			}
 			case NUMBER: {
 				IrNumber n = (IrNumber) v;
-				return "" + n.getValue();
+				//return "" + n.getValue();
+				double d = n.getValue();
+				if(d == (long)d) {
+					return String.format("%d", (long)d);
+				} else {
+					return String.format("%s", n.getValue());
+				}
 			}
 			case NULL: {
 				return "null";
@@ -70,7 +76,7 @@ public class IrCore {
 				return builder.toString();
 			}
 			default: {
-				return "<Type not supported by println. pls fix.>";
+				return "<Type not supported by println. pls fix.> Type: " + v.getType();
 			}
 		}
 	}

@@ -18,6 +18,7 @@ public class IrArray extends IrValue {
 
 	@Override
 	public IrValue eval(IrScope scope) {
+		//TODO: Do we need to evaluate the items here, because we might have TABLE_LITERAL.
 		return this;
 	}
 

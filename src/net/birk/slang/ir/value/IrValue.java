@@ -2,6 +2,7 @@ package net.birk.slang.ir.value;
 
 import net.birk.slang.SourceLoc;
 import net.birk.slang.Token;
+import net.birk.slang.ir.IrCore;
 import net.birk.slang.ir.IrException;
 import net.birk.slang.ir.IrScope;
 import net.birk.slang.ir.stmt.*;
@@ -142,11 +143,11 @@ public abstract class IrValue {
 				if(lhs.getType() == IrValue.Type.STRING && rhs.getType() == IrValue.Type.NUMBER) {
 					IrString lhstr = (IrString) lhs;
 					IrNumber rhstr = (IrNumber) rhs;
-					return new IrString(lhstr.getValue() + rhstr.getValue(), lhs.getLocation());
+					return new IrString(lhstr.getValue() + IrCore.stringifyValue(rhstr), lhs.getLocation());
 				} else if(lhs.getType() == IrValue.Type.NUMBER && rhs.getType() == IrValue.Type.STRING) {
 					IrNumber lhstr = (IrNumber) lhs;
 					IrString rhstr = (IrString) rhs;
-					return new IrString(lhstr.getValue() + rhstr.getValue(), lhs.getLocation());
+					return new IrString(IrCore.stringifyValue(lhstr) + rhstr.getValue(), lhs.getLocation());
 				} else if(lhs.getType() == IrValue.Type.STRING && rhs.getType() == IrValue.Type.STRING) {
 					IrString lhstr = (IrString) lhs;
 					IrString rhstr = (IrString) rhs;

@@ -229,6 +229,17 @@ fn assertTest() {
 //    println(fmt, ..args); // A 'spread' operator would be nice
 //}
 
+fn generateBigTest(n) {
+    fn gen(n) {
+        return "fn test" + n + "() {println(123" + n + ");}";
+    }
+    var i = 0;
+    while i < n {
+        println(gen(i));
+        i += 1;
+    }
+}
+
 fn main() {
     if true {
         genericTest();
@@ -252,8 +263,8 @@ fn main() {
         whileTest();
         anonFuncTest();
 
+        //generateBigTest(10000);
     }
-
 
     return 123;
 }
