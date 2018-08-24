@@ -271,5 +271,22 @@ fn main() {
         //generateBigTest(10000);
     }
 
+    println("[{id=123},{test=32*32}] = ", [{id=[1,2,3,4,5]},{test=32*32}]);
+
+    gfx.init(800, 600);
+
+    var r = 0;
+    while !gfx.shouldClose() {
+        gfx.clear(r, r, r);
+        r += 0.1;
+        if r > 255 {
+            r = 0;
+        }
+
+        gfx.fillRect(20, 20, 50, 50, 0, 0, 255);
+
+        gfx.present();
+    }
+
     return 123;
 }

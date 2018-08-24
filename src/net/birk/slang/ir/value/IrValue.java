@@ -27,6 +27,7 @@ public abstract class IrValue {
 		TABLE,
 		TABLE_LITERAL,
 		USERDATA,
+		FIELD,
 	}
 
 	private Type type;
@@ -385,6 +386,10 @@ public abstract class IrValue {
 			case ANON_FUNC: {
 				NodeAnonFunc f = (NodeAnonFunc) expr;
 				return new IrSlangFunc(generateBlock(f.getBlock()), f.getArgs(), f.getLocation());
+			}
+			case FIELD: {
+				NodeField f = (NodeField) expr;
+				return new IrField(generateExpr(f.getIdent()), generateExpr(f.getExpr()), f.getLocation());
 			}
 
 			default: {

@@ -1,5 +1,6 @@
 package net.birk.slang;
 
+import net.birk.slang.gfx.IrGfx;
 import net.birk.slang.ir.IrCore;
 import net.birk.slang.ir.IrException;
 import net.birk.slang.ir.IrScope;
@@ -21,7 +22,9 @@ public class Main {
 	/*
 	 * TODO:
 	 *  # Add userdata type (remember to implement the userdata tag)
+	 *  # Field, still needs assignment support
 	 *  - Add for
+	 *  - 'var' without expression
 	 *  - IrJavaFunc:
 	 *   - Add minimum args and exact args, that way we can do assert(boolean, ...printstuff)
 	 *  - IrSlangFunc:
@@ -99,6 +102,7 @@ public class Main {
 		}
 
 		IrCore.addFunctions(global);
+		IrGfx.addFunctions(global);
 
 		// Eval all top level expression once we have them all added
 		for(Map.Entry<String, IrValue> kv : fileScope.getSymbols().entrySet()) {
@@ -113,16 +117,16 @@ public class Main {
 
 
 		/*
-			IrValue main = fileScope.get("main");
-			if(main == null) {
-				throw new IrException(null, "Could not find the main function!");
-			}
-			IrValue returnValue = ((IrFunc)main).call(fileScope, mainArgs);
-			int returnCode = 0;
-			if(returnValue.getType() == IrValue.NUMBER) {
-				IrNumber n = (IrNumber) returnValue;
-				returnCode = (int) n.getValue();
-			}*/
+		IrValue main = fileScope.get("main");
+		if(main == null) {
+			throw new IrException(null, "Could not find the main function!");
+		}
+		IrValue returnValue = ((IrFunc)main).call(fileScope, mainArgs);
+		int returnCode = 0;
+		if(returnValue.getType() == IrValue.NUMBER) {
+			IrNumber n = (IrNumber) returnValue;
+			returnCode = (int) n.getValue();
+		}*/
 
 		return returnValue;
 	}

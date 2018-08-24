@@ -13,4 +13,12 @@ public class NodeField extends Node {
 		this.ident = ident;
 	}
 
+	public Node getExpr() {
+		return expr;
+	}
+
+	public NodeIdent getIdent() {
+		return ident;
+	}
+
 }

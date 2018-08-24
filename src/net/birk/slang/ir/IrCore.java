@@ -88,10 +88,17 @@ public class IrCore {
 
 		//TODO: contains, check if table has key
 
+		//TODO: Bitwise utils
+		// - bor, band, bxor, bnot, shl, shr
+		// - hex literals    '0x'
+		// - binary literals '0b'
+
+
 		//TODO: Array utilities
 		// - Check if contains value
 		// - First index of a value
 		// - All indices of a value
+
 		global.add("int", new IrJavaFunc(1, new SourceLoc("builtin-int", 1, 1)) {
 			@Override
 			public IrValue javaCall(IrScope scope, ArrayList<IrValue> args) {
@@ -187,7 +194,6 @@ public class IrCore {
 				return new IrString(result, null);
 			}
 		});
-		//TODO: Add assert
 	}
 
 }

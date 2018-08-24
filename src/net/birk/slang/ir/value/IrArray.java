@@ -19,6 +19,10 @@ public class IrArray extends IrValue {
 	@Override
 	public IrValue eval(IrScope scope) {
 		//TODO: Do we need to evaluate the items here, because we might have TABLE_LITERAL.
+		// I will do this for now, but evaulating every time seems a little expensive
+		for(int i = 0; i < items.size(); i++) {
+			items.set(i, items.get(i).eval(scope));
+		}
 		return this;
 	}
 
