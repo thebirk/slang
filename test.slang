@@ -245,7 +245,7 @@ fn intTest() {
 }
 
 fn main() {
-    if true {
+    if false {
         genericTest();
         concatTest();
         functionRenameTest();
@@ -271,9 +271,11 @@ fn main() {
         //generateBigTest(10000);
     }
 
-    println("[{id=123},{test=32*32}] = ", [{id=[1,2,3,4,5]},{test=32*32}]);
+    //println("[{id=123},{test=32*32}] = ", [{id=[1,2,3,4,5]},{test=32*32}]);
 
     gfx.init(800, 600);
+    var texture = gfx.loadTexture("test.png");
+    println(texture);
 
     var r = 0;
     while !gfx.shouldClose() {
@@ -284,6 +286,8 @@ fn main() {
         }
 
         gfx.fillRect(20, 20, 50, 50, 0, 0, 255);
+
+        gfx.drawTexture(texture, 20 + r, 100);
 
         gfx.present();
     }

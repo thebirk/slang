@@ -75,6 +75,10 @@ public class IrCore {
 				builder.append(" ]");
 				return builder.toString();
 			}
+			case USERDATA: {
+				IrUserdata d = (IrUserdata) v;
+				return "userdata#" + d.getUserType();
+			}
 			default: {
 				return "<Type not supported by println. pls fix.> Type: " + v.getType();
 			}

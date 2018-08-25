@@ -6,6 +6,8 @@ import net.birk.slang.ir.IrScope;
 
 public abstract class IrUserdata extends IrValue {
 
+	private static int userTypeCoounter = 0;
+
 	//TODO: Find a way to create runtime persistent userTypeIDs.
 	private int userType;
 
@@ -31,6 +33,10 @@ public abstract class IrUserdata extends IrValue {
 	@Override
 	public boolean isEqual(IrValue other) {
 		throw new IrException(getLocation(), "Cannot compare a value of type USERDATA");
+	}
+
+	public static int genUserType() {
+		return ++userTypeCoounter;
 	}
 
 }

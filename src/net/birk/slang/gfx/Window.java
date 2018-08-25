@@ -10,13 +10,13 @@ public class Window {
 
 	private int width;
 	private int height;
-	private JFrame frame;
+	private JFrame f;
 	private Canvas canvas;
 	private boolean shouldClose = false;
 	private Graphics g;
 
 	public Window(int width, int height) {
-		JFrame f = new JFrame();
+		f = new JFrame();
 		f.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		f.setResizable(false);
 		this.width = width;
@@ -56,6 +56,12 @@ public class Window {
 		//TODO: Clamp color
 		this.g.setColor(new Color(r, g, b));
 		this.g.fillRect(x, y, width, height);
+	}
+
+	public void drawTexture(Texture texture, int x, int y) {
+		if(texture.getImage() != null) {
+			g.drawImage(texture.getImage(), x, y, null);
+		}
 	}
 
 	public void present() {
