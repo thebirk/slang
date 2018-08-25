@@ -307,6 +307,10 @@ public abstract class IrValue {
 				NodeWhile nw = (NodeWhile) n;
 				return new IrWhile(generateExpr(nw.getCond()), generateBlock(nw.getBlock()), n.getLocation());
 			}
+			case FOR: {
+				NodeFor f = (NodeFor) n;
+				return new IrFor(f.getFirstName(), f.getSecondName(), generateExpr(f.getExpr()), generateBlock(f.getBlock()), f.getLocation());
+			}
 			default: {
 				throw new RuntimeException("Incomplete switch!");
 			}

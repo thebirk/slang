@@ -188,6 +188,8 @@ public class Lexer {
 					case "return": tokens.set(i, new Token(Token.RETURN, "return", t.getSourceLoc())); break;
 					case "else": tokens.set(i, new Token(Token.ELSE, "else", t.getSourceLoc())); break;
 					case "while": tokens.set(i, new Token(Token.WHILE, "while", t.getSourceLoc())); break;
+					case "for": tokens.set(i, new Token(Token.FOR, "for", t.getSourceLoc())); break;
+					case "in": tokens.set(i, new Token(Token.IN, "in", t.getSourceLoc())); break;
 				}
 			}
 		}

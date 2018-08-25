@@ -21,9 +21,11 @@ public class Main {
 
 	/*
 	 * TODO:
-	 *  # Add userdata type (remember to implement the userdata tag)
+	 *  # Add userdata type, usertype tag is implemented. But we should probably use a string
 	 *  # Field, still needs assignment support
-	 *  - Add for
+	 *  - Add for, using the style, for v in array
+	 *   - if we have a comma after the first ident read a second one which will be the index
+	 *     or the key if a table(or do we switch it around for key,val?)
 	 *  - 'var' without expression
 	 *  - IrJavaFunc:
 	 *   - Add minimum args and exact args, that way we can do assert(boolean, ...printstuff)
@@ -63,6 +65,7 @@ public class Main {
 	 *      }
 	 *   - Tail calls? Is it even possible for us?
 	 *    - We only really need to keep the same Scope, otherwise we nest deep
+	 *   - Create an annotation that will allow us to document builtin functions
 	 *
 	 */
 

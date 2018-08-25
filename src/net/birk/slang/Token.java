@@ -23,6 +23,8 @@ public class Token {
 	public static final int RETURN = 146;
 	public static final int ELSE = 147;
 	public static final int WHILE = 148;
+	public static final int FOR = 149;
+	public static final int IN = 150;
 
 	private int type;
 	private String lexeme;
@@ -78,6 +80,8 @@ public class Token {
 			case RETURN: return "return";
 			case ELSE: return "else";
 			case WHILE: return "while";
+			case FOR: return "for";
+			case IN: return "in";
 		}
 
 		throw new RuntimeException("Invalid Token type: " + type);

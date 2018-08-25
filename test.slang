@@ -244,6 +244,38 @@ fn intTest() {
     println("int(1.5) = ", int(1.5));
 }
 
+fn gfxTest() {
+    gfx.init(800, 600);
+    var texture = gfx.loadTexture("test.png");
+    println(texture);
+
+    var r = 0;
+    while !gfx.shouldClose() {
+        gfx.clear(r, r, r);
+        r += 0.1;
+        if r > 255 {
+            r = 0;
+        }
+
+        gfx.fillRect(20, 20, 50, 50, 0, 0, 255);
+
+        gfx.drawTexture(texture, 20 + r, 100);
+
+        gfx.present();
+    }
+}
+
+fn forTest() {
+    //var arr = [1, 2, 3, 4, 5, 6, 7, 8];
+    var arr = [8, 7, 6, 5, 4, 3, 2, 1];
+    var sum = 0;
+    for v, index in arr {
+        sum += v;
+        println("arr[" + index + "] = " + v);
+    }
+    println("sum = ", sum);
+}
+
 fn main() {
     if false {
         genericTest();
@@ -267,30 +299,13 @@ fn main() {
         whileTest();
         anonFuncTest();
         intTest();
+        //gfxTest();
 
+        //println("[{id=123},{test=32*32}] = ", [{id=[1,2,3,4,5]},{test=32*32}]);
         //generateBigTest(10000);
     }
 
-    //println("[{id=123},{test=32*32}] = ", [{id=[1,2,3,4,5]},{test=32*32}]);
-
-    gfx.init(800, 600);
-    var texture = gfx.loadTexture("test.png");
-    println(texture);
-
-    var r = 0;
-    while !gfx.shouldClose() {
-        gfx.clear(r, r, r);
-        r += 0.1;
-        if r > 255 {
-            r = 0;
-        }
-
-        gfx.fillRect(20, 20, 50, 50, 0, 0, 255);
-
-        gfx.drawTexture(texture, 20 + r, 100);
-
-        gfx.present();
-    }
+    forTest();
 
     return 123;
 }

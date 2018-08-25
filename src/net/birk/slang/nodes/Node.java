@@ -26,6 +26,7 @@ public class Node {
 		TABLE_LITERAL,
 		WHILE,
 		ANON_FUNC,
+		FOR,
 	}
 
 	private Type type;

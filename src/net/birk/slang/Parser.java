@@ -347,6 +347,41 @@ public class Parser {
 		}
 	}
 
+	private Node parseFor() {
+		assert currentToken.getType() == Token.FOR;
+
+		Token _for = currentToken;
+		nextToken();
+
+		Token name = currentToken;
+		if(!matchToken(Token.IDENT)) {
+			System.err.println(currentToken.getSourceLoc() + ": Syntax error! Expected 'identifier', got '" + currentToken.getTypeString() + "'.");
+			System.exit(1);
+			return null;
+		}
+		Token secondName = null;
+
+		if(matchToken(',')) {
+			secondName = currentToken;
+			if(!matchToken(Token.IDENT)) {
+				System.err.println(currentToken.getSourceLoc() + ": Syntax error! Expected 'identifier', got '" + currentToken.getTypeString() + "'.");
+				System.exit(1);
+				return null;
+			}
+		}
+
+		if(!matchToken(Token.IN)) {
+			System.err.println(currentToken.getSourceLoc() + ": Syntax error! Expected 'in', got '" + currentToken.getTypeString() + "'.");
+			System.exit(1);
+			return null;
+		}
+
+		Node expr = parseExpr();
+		NodeBlock block = parseBlock();
+
+		return new NodeFor(name, secondName, expr, block, _for.getSourceLoc());
+	}
+
 	private Node parseStmt() {
 		if(isToken(Token.FUNC)) {
 			return parseFunc();
@@ -359,6 +394,9 @@ public class Parser {
 		}
 		else if(isToken(Token.WHILE)) {
 			return parseWhile();
+		}
+		else if(isToken(Token.FOR)) {
+			return parseFor();
 		}
 		else if(isToken(Token.RETURN)) {
 			return parseReturn();
@@ -397,7 +435,7 @@ public class Parser {
 				stmts.add(stmt);
 
 				//NOTE: Hacky!
-				if(stmt.getType() != Node.Type.FUNC && stmt.getType() != Node.Type.IF && stmt.getType() != Node.Type.BLOCK && stmt.getType() != Node.Type.WHILE) {
+				if(stmt.getType() != Node.Type.FUNC && stmt.getType() != Node.Type.IF && stmt.getType() != Node.Type.BLOCK && stmt.getType() != Node.Type.WHILE && stmt.getType() != Node.Type.FOR) {
 					if (!matchToken(';')) {
 						System.err.println(currentToken.getSourceLoc() + ": Syntax error! Expected ';' after statement, got '" + currentToken.getTypeString() + "'.");
 						System.exit(1);
@@ -419,7 +457,7 @@ public class Parser {
 					stmts.add(stmt);
 
 					//NOTE: Hacky!
-					if(stmt.getType() != Node.Type.FUNC && stmt.getType() != Node.Type.IF && stmt.getType() != Node.Type.BLOCK && stmt.getType() != Node.Type.WHILE) {
+					if(stmt.getType() != Node.Type.FUNC && stmt.getType() != Node.Type.IF && stmt.getType() != Node.Type.BLOCK && stmt.getType() != Node.Type.WHILE && stmt.getType() != Node.Type.FOR) {
 						if (!matchToken(';')) {
 							System.err.println(currentToken.getSourceLoc() + ": Syntax error! Expected ';' after statement, got '" + currentToken.getTypeString() + "'.");
 							System.exit(1);

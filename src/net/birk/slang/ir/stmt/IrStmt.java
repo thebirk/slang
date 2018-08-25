@@ -12,7 +12,8 @@ public abstract class IrStmt {
 		CALL,
 		BLOCK,
 		IF,
-		WHILE
+		WHILE,
+		FOR,
 	}
 
 	private Type type;
