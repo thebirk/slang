@@ -1,6 +1,7 @@
 package net.birk.slang.ir;
 
 import net.birk.slang.SourceLoc;
+import net.birk.slang.Token;
 import net.birk.slang.ir.value.*;
 
 import java.util.ArrayList;
@@ -196,6 +197,22 @@ public class IrCore {
 				}
 
 				return new IrString(result, null);
+			}
+		});
+
+		global.add("range", new IrJavaFunc(1, new SourceLoc("builtin-range", 1, 1)) {
+			@Override
+			public IrValue javaCall(IrScope scope, ArrayList<IrValue> args) {
+				IrValue arg = args.get(0);
+				if(arg.getType() != Type.NUMBER) {
+					throw new IrException(getLocation(), "range expects a number argument!");
+				}
+				IrNumber n = (IrNumber) arg;
+				ArrayList<IrValue> items = new ArrayList<IrValue>((int)n.getValue());
+				for(int i = 0; i < (int)n.getValue(); i++) {
+					items.add(new IrNumber(i, getLocation()));
+				}
+				return new IrArray(items, getLocation());
 			}
 		});
 	}

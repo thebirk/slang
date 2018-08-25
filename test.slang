@@ -269,9 +269,15 @@ fn forTest() {
     //var arr = [1, 2, 3, 4, 5, 6, 7, 8];
     var arr = [8, 7, 6, 5, 4, 3, 2, 1];
     var sum = 0;
-    for v, index in arr {
+    for v, index in [123, 321, 45] {
         sum += v;
         println("arr[" + index + "] = " + v);
+    }
+    println("sum = ", sum);
+
+    sum = 0;
+    for i in range(100) {
+        sum += i;
     }
     println("sum = ", sum);
 }

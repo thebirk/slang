@@ -53,6 +53,9 @@ public class IrFor extends IrStmt {
 		else if(expr.getType() == IrValue.Type.TABLE) {
 			throw new RuntimeException("Incomplete");
 		}
+		else if(expr.getType() == IrValue.Type.STRING) {
+			throw new RuntimeException("Incomplete");
+		}
 		else {
 			throw new IrException(expr.getLocation(), "Cannot iterate over expression of type " + expr.getType() + "!");
 		}
