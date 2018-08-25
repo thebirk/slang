@@ -29,17 +29,13 @@ public class IrFor extends IrStmt {
 
 		if(expr.getType() == IrValue.Type.ARRAY) {
 			IrArray a = (IrArray) expr;
-			IrScope forScope = new IrScope(scope);
-			forScope.add(firstName, new IrNull(null));
-			if(secondName != null) {
-				forScope.add(secondName, new IrNull(null));
-			}
 
 			for(int i = 0; i < a.getItems().size(); i++) {
 				IrValue v = a.getItems().get(i);
-				forScope.set(firstName, v); //NOTE: We pass the same value, aka by reference
+				IrScope forScope = new IrScope(scope);
+				forScope.add(firstName, v); //NOTE: We pass the same value, aka by reference
 				if(secondName != null) {
-					forScope.set(secondName, new IrNumber(i, getLocation()));
+					forScope.add(secondName, new IrNumber(i, getLocation()));
 				}
 				IrStmtResult result = block.eval(forScope);
 				//TODO: if(result.getStatus() == IrStmtResult.BREAK)

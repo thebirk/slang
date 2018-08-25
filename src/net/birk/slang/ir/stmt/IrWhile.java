@@ -17,11 +17,14 @@ public class IrWhile extends IrStmt {
 
 	@Override
 	public IrStmtResult eval(IrScope scope) {
-		IrStmtResult result = new IrStmtResult(IrStmtResult.NORMAL, null);
 		while(IrValue.isTrue(cond.eval(scope))) {
-			result = block.eval(scope);
+			IrStmtResult result = block.eval(scope);
+			if(result.getStatus() == IrStmtResult.RETURN) {
+				return result;
+			}
+			// else if(result.getStatus() == IrStmtResult.BREAK)
 		}
-		return result;
+		return new IrStmtResult(IrStmtResult.NORMAL, null);
 	}
 
 }
