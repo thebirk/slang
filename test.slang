@@ -276,12 +276,20 @@ fn forTest() {
     println("sum = ", sum);
 
     sum = 0;
-    for i in range(100) {
+    for i in range(1000000) {
         sum += i;
     }
     println("sum = ", sum);
 
     println("len(range(100)) = ", len(range(100)));
+}
+
+
+var test = [1, 2, 3, 4];
+fn forExprTest() {
+	for v, i in test {
+		println("test[", i, "] = ", v);
+	}
 }
 
 fn main() {
@@ -313,7 +321,10 @@ fn main() {
         //generateBigTest(10000);
     }
 
-    forTest();
+//	forTest();
+	forExprTest();
+	test = [4, 3, 2, 1];
+	forExprTest();
 
     return 123;
 }

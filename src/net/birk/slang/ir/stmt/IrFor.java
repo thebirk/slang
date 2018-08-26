@@ -25,7 +25,7 @@ public class IrFor extends IrStmt {
 
 	@Override
 	public IrStmtResult eval(IrScope scope) {
-		expr = expr.eval(scope);
+		IrValue expr = this.expr.eval(scope);
 
 		if(expr.getType() == IrValue.Type.ARRAY) {
 			IrArray a = (IrArray) expr;
