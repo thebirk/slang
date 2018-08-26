@@ -285,15 +285,26 @@ fn forTest() {
 }
 
 
-var test = [1, 2, 3, 4];
+var forExprVar = [1, 2, 3, 4];
 fn forExprTest() {
-	for v, i in test {
+	for v, i in forExprVar {
 		println("test[", i, "] = ", v);
 	}
 }
 
+fn fibTest() {
+	fn fib(n) {
+		if n == 0 do return 0;
+		else if n == 1 do return 1;
+		else do return fib(n-2) + fib(n-1);
+    }
+	println("fib(5)  = ", fib(5));
+	println("fib(10) = ", fib(10));
+	//println(fib(40));
+}
+
 fn main() {
-    if false {
+    if true {
         genericTest();
         concatTest();
         functionRenameTest();
@@ -316,15 +327,19 @@ fn main() {
         anonFuncTest();
         intTest();
         //gfxTest();
+        forTest();
+		if true {
+			forExprTest();
+			forExprVar = [4, 3, 2, 1];
+			forExprTest();
+		}
+		fibTest();
 
         //println("[{id=123},{test=32*32}] = ", [{id=[1,2,3,4,5]},{test=32*32}]);
         //generateBigTest(10000);
     }
 
-//	forTest();
-	forExprTest();
-	test = [4, 3, 2, 1];
-	forExprTest();
+
 
     return 123;
 }
