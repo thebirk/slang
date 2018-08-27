@@ -73,6 +73,21 @@ public abstract class IrValue {
 		// <, <=, >, >= -> number
 
 		switch(op) {
+			case Token.LAND:
+			case Token.LOR: {
+				if(lhs.getType() != Type.BOOLEAN || rhs.getType() != Type.BOOLEAN) {
+					throw new IrException(lhs.getLocation(), "Operator '" + op + "' can only be used with boolean values! lhs: " + lhs.getType() + ", rhs: " + rhs.getType());
+				}
+
+				IrBoolean b1 = (IrBoolean)  lhs;
+				IrBoolean b2 = (IrBoolean)  rhs;
+				if(op == Token.LAND) {
+					return new IrBoolean(b1.getValue() && b2.getValue(), lhs.getLocation());
+				} else {
+					return new IrBoolean(b1.getValue() || b2.getValue(), lhs.getLocation());
+				}
+			}
+
 			case Token.EQUALS:
 			case Token.NE: {
 				if(lhs.getType() == IrValue.Type.NULL || rhs.getType() == IrValue.Type.NULL) {

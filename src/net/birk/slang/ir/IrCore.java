@@ -38,8 +38,9 @@ public class IrCore {
 				return "" + b.getValue();
 			}
 			case FUNC: {
-				throw new RuntimeException("Unimplemented!");
-			} //break;
+				return "func";
+				//throw new RuntimeException("Unimplemented!");
+			}
 			case TABLE: {
 				IrTable table = (IrTable) v;
 				//TODO: Print it all

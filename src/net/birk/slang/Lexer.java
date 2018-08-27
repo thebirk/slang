@@ -106,6 +106,14 @@ public class Lexer {
 			line++;
 			return readToken();
 		}
+		else if(c == '|' && c2 == '|') {
+			offset += 2;
+			return new Token(Token.LOR, "||", new SourceLoc(path, line, offset - 2));
+		}
+		else if(c == '&' && c2 == '&') {
+			offset += 2;
+			return new Token(Token.LAND, "&&", new SourceLoc(path, line, offset - 2));
+		}
 		else if(c == '=' && c2 == '=') {
 			offset += 2;
 			return new Token(Token.EQUALS, "==", new SourceLoc(path, line, offset - 2));

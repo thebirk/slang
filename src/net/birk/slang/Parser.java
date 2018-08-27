@@ -262,7 +262,7 @@ public class Parser {
 	private Node parseComps() {
 		Node lhs = parsePlus();
 
-		while(isToken(Token.EQUALS) || isToken(Token.NE) || isToken(Token.GTE) || isToken(Token.LTE) || isToken('<') || isToken('>')) {
+		while(isToken(Token.EQUALS) || isToken(Token.NE) || isToken(Token.GTE) || isToken(Token.LTE) || isToken('<') || isToken('>') || isToken(Token.LAND) || isToken(Token.LOR)) {
 			Token op = currentToken;
 			nextToken();
 			Node rhs = parsePlus();

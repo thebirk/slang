@@ -25,6 +25,8 @@ public class Token {
 	public static final int WHILE = 148;
 	public static final int FOR = 149;
 	public static final int IN = 150;
+	public static final int LAND = 151;
+	public static final int LOR = 152;
 
 	private int type;
 	private String lexeme;
@@ -82,6 +84,8 @@ public class Token {
 			case WHILE: return "while";
 			case FOR: return "for";
 			case IN: return "in";
+			case LAND: return "&&";
+			case LOR: return "||";
 		}
 
 		throw new RuntimeException("Invalid Token type: " + type);

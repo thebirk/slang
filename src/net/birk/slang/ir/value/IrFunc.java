@@ -9,6 +9,7 @@ public abstract class IrFunc extends IrValue {
 
 	public static final int SLANG_FUNCTION = 0;
 	public static final int JAVA_FUNCTION = 1;
+	public static final int VM_FUNCTION = 2;
 
 	private int functionType;
 

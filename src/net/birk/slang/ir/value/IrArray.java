@@ -4,6 +4,7 @@ import net.birk.slang.SourceLoc;
 import net.birk.slang.ir.IrScope;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class IrArray extends IrValue {
 
@@ -39,4 +40,19 @@ public class IrArray extends IrValue {
 	public ArrayList<IrValue> getItems() {
 		return items;
 	}
+
+	public void ensureLength(int length) {
+		if(length <= items.size()) return;
+
+		int newElements = length - items.size();
+
+		items.ensureCapacity(length);
+
+		IrValue[] newItems = new IrValue[newElements];
+		for(int i = 0; i < newItems.length; i++) {
+			newItems[i] = new IrNull(getLocation());
+		}
+		items.addAll(Arrays.asList(newItems));
+	}
+
 }

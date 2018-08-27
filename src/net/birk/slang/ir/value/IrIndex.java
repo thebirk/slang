@@ -17,10 +17,10 @@ public class IrIndex extends IrValue {
 
 	@Override
 	public IrValue eval(IrScope scope) {
-		expr = expr.eval(scope);
+		IrValue expr = this.expr.eval(scope);
 		if(expr.getType() == IrValue.Type.ARRAY) {
 			IrArray array = (IrArray) expr;
-			index = index.eval(scope);
+			IrValue index = this.index.eval(scope);
 			if(index.getType() != IrValue.Type.NUMBER) {
 				throw new IrException(index.getLocation(), "Can only index arrays using numbers!");
 			}
@@ -31,7 +31,7 @@ public class IrIndex extends IrValue {
 			return array.getItems().get((int)indexN.getValue()).eval(scope);
 		} else if(expr.getType() == IrValue.Type.TABLE) {
 			IrTable table = (IrTable) expr;
-			index = index.eval(scope);
+			IrValue index = this.index.eval(scope);
 			if(index == null) throw new RuntimeException("Internal compiler error! Java null cannot be used as index!");
 			IrValue result = table.getMap().get(index);
 			if(result == null) {

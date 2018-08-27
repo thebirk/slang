@@ -63,6 +63,7 @@ public class IrAssignment extends IrStmt {
 				}
 				IrNumber indexN = (IrNumber) index;
 				int nIndex = (int)indexN.getValue();
+				array.ensureLength(nIndex+1);
 
 				IrValue result = rhs.eval(scope);
 				IrValue lhsValue = array.getItems().get(nIndex).eval(scope);

@@ -213,7 +213,7 @@ fn typeTest() {
 
     println("addNumbers(1, 2) = ", addNumbers(1, 2));
     // Next line should fail
-    //println("addNumbers('Not a number', 2) = ", addNumbers("Not a number", 2));
+    //println("addNumbers('Not a number', 2) = ", addNumbers("Not a discnumber", 2));
 }
 
 fn assertTest() {
@@ -303,8 +303,16 @@ fn fibTest() {
 	//println(fib(40));
 }
 
+fn arrayExpandTest() {
+    var arr = [];
+    arr[1] = 123;
+    arr[1000] = 32;
+    //arr[55] += "Nope";
+    //arr[1001] += "Nope again";
+}
+
 fn main() {
-    if true {
+    if false {
         genericTest();
         concatTest();
         functionRenameTest();
@@ -334,11 +342,11 @@ fn main() {
 			forExprTest();
 		}
 		fibTest();
+        arrayExpandTest();
 
         //println("[{id=123},{test=32*32}] = ", [{id=[1,2,3,4,5]},{test=32*32}]);
         //generateBigTest(10000);
     }
-
 
 
     return 123;

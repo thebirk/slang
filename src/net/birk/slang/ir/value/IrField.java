@@ -17,7 +17,7 @@ public class IrField extends IrValue {
 
 	@Override
 	public IrValue eval(IrScope scope) {
-		expr = expr.eval(scope);
+		IrValue expr = this.expr.eval(scope);
 		if(expr.getType() != Type.TABLE) {
 			throw new IrException(getLocation(), "Cannot use '.' operator with non-table values!");
 		}
