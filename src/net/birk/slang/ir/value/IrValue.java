@@ -28,6 +28,7 @@ public abstract class IrValue {
 		TABLE_LITERAL,
 		USERDATA,
 		FIELD,
+		SELFCALL,
 	}
 
 	private Type type;
@@ -299,6 +300,17 @@ public abstract class IrValue {
 				IrCallStmt irCallStmt = new IrCallStmt(generateExpr(ncall.getExpr()), args, ncall.getLocation());
 				return irCallStmt;
 			}
+			case SELFCALL: {
+				NodeSelfCall ncall = (NodeSelfCall) n;
+				IrValue expr = generateExpr(ncall.expr);
+				IrValue ident = generateExpr(ncall.ident);
+				ArrayList<IrValue> args = new ArrayList<IrValue>();
+				for(Node argn : ncall.getArgs()) {
+					args.add(generateExpr(argn));
+				}
+				IrSelfCallStmt irSelfCallStmt = new IrSelfCallStmt(expr, ident, args, ncall.getLocation());
+				return irSelfCallStmt;
+			}
 			case ASSIGNMENT: {
 				NodeAssignment na = (NodeAssignment) n;
 				IrAssignment irAssignment = new IrAssignment(na.getOp(), generateExpr(na.getLhs()), generateExpr(na.getRhs()), na.getLocation());
@@ -409,6 +421,14 @@ public abstract class IrValue {
 			case FIELD: {
 				NodeField f = (NodeField) expr;
 				return new IrField(generateExpr(f.getIdent()), generateExpr(f.getExpr()), f.getLocation());
+			}
+			case SELFCALL: {
+				NodeSelfCall s = (NodeSelfCall) expr;
+				ArrayList<IrValue> args = new ArrayList<IrValue>();
+				for(Node n : s.getArgs()) {
+					args.add(generateExpr(n));
+				}
+				return new IrSelfCall(generateExpr(s.expr), generateExpr(s.ident), args, s.getLocation());
 			}
 
 			default: {

@@ -164,7 +164,7 @@ public class Parser {
 	private Node parseBase() {
 		Node expr = parseOperand();
 
-		while(isToken('(') || isToken('[') || isToken('.')) {
+		while(isToken('(') || isToken('[') || isToken('.') || isToken(':')) {
 			Token op = currentToken;
 
 			if(matchToken('[')) {
@@ -205,6 +205,37 @@ public class Parser {
 				}
 
 				expr = new NodeField(expr, new NodeIdent(t.getLexeme(), t.getSourceLoc()), t.getSourceLoc());
+			}
+			else if(matchToken(':')) {
+				Token t = currentToken;
+				if(!matchToken(Token.IDENT)) {
+					System.err.println(currentToken.getSourceLoc() + ": Syntax error! Expected 'identifier' after ':', got '" + currentToken.getTypeString() + "'.");
+					System.exit(1);
+					return null;
+				}
+
+				NodeIdent ident = new NodeIdent(t.getLexeme(), t.getSourceLoc());
+
+				ArrayList<Node> args = new ArrayList<Node>();
+				if(matchToken('(')) {
+					do {
+						Node arg = parseExpr();
+						args.add(arg);
+					} while(matchToken(','));
+
+					if(!matchToken(')')) {
+						System.err.println(currentToken.getSourceLoc() + ": Syntax error! Expected ')', got '" + currentToken.getTypeString() + "'.");
+						System.exit(1);
+						return null;
+					}
+
+				} else {
+					System.err.println(currentToken.getSourceLoc() + ": Syntax error! Expected '(' after 'identifier', got '" + currentToken.getTypeString() + "'.");
+					System.exit(1);
+					return null;
+				}
+
+				expr = new NodeSelfCall(expr, ident, args, t.getSourceLoc());
 			}
 			else {
 				System.err.println("Unsynced while and if!");
@@ -416,6 +447,9 @@ public class Parser {
 				return new NodeAssignment(op.getType(), expr, rhs, op.getSourceLoc());
 			}
 			else if(expr.getType() == Node.Type.CALL) {
+				return expr;
+			}
+			else if(expr.getType() == Node.Type.SELFCALL) {
 				return expr;
 			}
 			else {

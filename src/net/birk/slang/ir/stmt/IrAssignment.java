@@ -21,10 +21,10 @@ public class IrAssignment extends IrStmt {
 
 	@Override
 	public IrStmtResult eval(IrScope scope) {
-		if(lhs.getType() != IrValue.Type.IDENT && lhs.getType() != IrValue.Type.INDEX) {
+		if(lhs.getType() != IrValue.Type.IDENT && lhs.getType() != IrValue.Type.INDEX && lhs.getType() != IrValue.Type.FIELD) {
 			lhs = lhs.eval(scope);
 		}
-		if(lhs.getType() != IrValue.Type.IDENT && lhs.getType() != IrValue.Type.INDEX) {
+		if(lhs.getType() != IrValue.Type.IDENT && lhs.getType() != IrValue.Type.INDEX && lhs.getType() != IrValue.Type.FIELD) {
 			throw new IrException(lhs.getLocation(), "Cannot assign to left hand of assignment!");
 			//throw new IrException(lhs.getLocation(), "Left hand side of assignment cannot be assigned to!");
 		}
@@ -120,7 +120,76 @@ public class IrAssignment extends IrStmt {
 			}
 
 
-		} else {
+		}
+		else if(lhs.getType() == IrValue.Type.FIELD) {
+			IrField irIndex = (IrField) lhs;
+			IrValue expr = irIndex.getExpr().eval(scope);
+
+			if(expr.getType() == IrValue.Type.ARRAY) {
+				IrArray array = (IrArray) expr;
+				IrValue index = irIndex.getIdent();
+				if(index.getType() != IrValue.Type.NUMBER) {
+					throw new IrException(index.getLocation(), "Can only index arrays using numbers!");
+				}
+				IrNumber indexN = (IrNumber) index;
+				int nIndex = (int)indexN.getValue();
+				array.ensureLength(nIndex+1);
+
+				IrValue result = rhs.eval(scope);
+				IrValue lhsValue = array.getItems().get(nIndex).eval(scope);
+				switch (op) {
+					case '=': break;
+					case Token.PLUS_EQUALS: {
+						result = IrValue.doBinary('+', lhsValue, result);
+					} break;
+					case Token.MINUS_EQUALS: {
+						result = IrValue.doBinary('-', lhsValue, result);
+					} break;
+
+					default: {
+						throw new IrException(getLocation(), "Internal compiler error!");
+					}
+				}
+
+				//TODO: Warn on non-integer index?
+				array.getItems().set((int)((IrNumber) index).getValue(), result);
+			}
+			else if(expr.getType() == IrValue.Type.TABLE) {
+				// Good luck!
+				IrTable table = (IrTable) expr;
+				IrValue indexValue = irIndex.getIdent();
+
+				IrValue result = rhs.eval(scope);
+				IrValue lhsValue = table.getMap().get(indexValue);
+
+				if(lhsValue == null) {
+					//TODO: If we have += or -= no key is not valid but if we only have = then add the key
+					throw new RuntimeException("This is not good!");
+				}
+
+				lhsValue =  lhsValue.eval(scope);
+
+				switch (op) {
+					case '=': break;
+					case Token.PLUS_EQUALS: {
+						result = IrValue.doBinary('+', lhsValue, result);
+					} break;
+					case Token.MINUS_EQUALS: {
+						result = IrValue.doBinary('-', lhsValue, result);
+					} break;
+
+					default: {
+						throw new IrException(getLocation(), "Internal compiler error!");
+					}
+				}
+
+				table.getMap().put(indexValue, result);
+			}
+			else {
+				throw new IrException(getLocation(), "Trying to index non-indexable value!");
+			}
+		}
+		else {
 			throw new IrException(getLocation(), "Internal compiler error!");
 		}
 

@@ -312,7 +312,7 @@ fn arrayExpandTest() {
 }
 
 fn main() {
-    if false {
+    if true {
         genericTest();
         concatTest();
         functionRenameTest();

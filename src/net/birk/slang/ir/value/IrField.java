@@ -34,4 +34,13 @@ public class IrField extends IrValue {
 	public boolean isEqual(IrValue other) {
 		throw new IrException(getLocation(), "Internal compiler error! Cannot compare IrField!");
 	}
+
+	public IrValue getIdent() {
+		return ident;
+	}
+
+	public IrValue getExpr() {
+		return expr;
+	}
+
 }

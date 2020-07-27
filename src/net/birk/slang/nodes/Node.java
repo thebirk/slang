@@ -27,6 +27,7 @@ public class Node {
 		WHILE,
 		ANON_FUNC,
 		FOR,
+		SELFCALL,
 	}
 
 	private Type type;
